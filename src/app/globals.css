@@ -1,0 +1,247 @@
+/* Custom CSS variables for two distinct modes */
+:root {
+  /* Common variables */
+  --transition-speed: 0.4s;
+  --font-heading: var(--font-outfit), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+}
+
+/* 🔬 TECH MODE: Cyber Dark Theme */
+.tech-theme {
+  --background: #030816;
+  --background-alt: #071026;
+  --background-card: rgba(7, 18, 44, 0.65);
+  --foreground: #e6efff;
+  --foreground-muted: #8fa0c2;
+  --accent: #00f0ff;
+  --accent-secondary: #8a2be2;
+  --accent-glow: rgba(0, 240, 255, 0.15);
+  --accent-glow-strong: rgba(0, 240, 255, 0.4);
+  --border-color: rgba(0, 240, 255, 0.15);
+  --border-color-hover: rgba(0, 240, 255, 0.4);
+  --shadow-color: rgba(0, 240, 255, 0.1);
+  --scanline-color: rgba(0, 240, 255, 0.03);
+}
+
+/* 🎮 OTAKU MODE: Blue Archive Inspired Light Theme */
+.otaku-theme {
+  --background: #f2f7fc;
+  --background-alt: #ffffff;
+  --background-card: rgba(255, 255, 255, 0.9);
+  --foreground: #1c2b42;
+  --foreground-muted: #627795;
+  --accent: #128aff; /* Schale Blue */
+  --accent-secondary: #ff7695; /* Arona Pink */
+  --accent-glow: rgba(18, 138, 255, 0.08);
+  --accent-glow-strong: rgba(18, 138, 255, 0.25);
+  --border-color: rgba(18, 138, 255, 0.12);
+  --border-color-hover: rgba(18, 138, 255, 0.35);
+  --shadow-color: rgba(18, 138, 255, 0.08);
+  --scanline-color: rgba(18, 138, 255, 0.02);
+}
+
+/* Reset and Core Styles */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-body);
+  color: var(--foreground);
+  background-color: var(--background);
+  transition: background-color var(--transition-speed) cubic-bezier(0.25, 0.8, 0.25, 1),
+              color var(--transition-speed) ease;
+  scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 5px;
+  border: 2px solid var(--background);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Typography helper classes */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* Dual Background Design Elements */
+
+/* Grid and lines */
+.background-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Technical grid for Tech Mode */
+.tech-theme .background-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 85%);
+  animation: grid-pulse 8s infinite alternate ease-in-out;
+}
+
+/* Diagonal stripe overlay for Otaku Mode (Blue Archive vibe) */
+.otaku-theme .background-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(45deg, rgba(18, 138, 255, 0.015) 0px, rgba(18, 138, 255, 0.015) 2px, transparent 2px, transparent 15px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(242, 247, 252, 0.5) 100%);
+  background-size: 100% 100%;
+}
+
+.otaku-theme .background-canvas::after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(18, 138, 255, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+/* Global Scanlines */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: linear-gradient(
+    var(--scanline-color) 50%, 
+    transparent 50%
+  );
+  background-size: 100% 4px;
+}
+
+/* Keyframes & Animations */
+@keyframes grid-pulse {
+  0% { opacity: 0.7; }
+  100% { opacity: 1.2; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--accent); }
+}
+
+@keyframes halo-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px var(--accent)); }
+  50% { filter: drop-shadow(0 0 12px var(--accent)) drop-shadow(0 0 2px var(--accent-secondary)); }
+}
+
+/* Sweeping Transition overlay trigger (Screen Wipe) */
+.screen-wipe {
+  position: fixed;
+  inset: 0;
+  background-color: var(--accent);
+  z-index: 10000;
+  transform: translateY(100%);
+  pointer-events: none;
+}
+
+.screen-wipe.active {
+  animation: wipe-animation 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes wipe-animation {
+  0% {
+    transform: translateY(100%);
+  }
+  45%, 55% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+/* Floating BA style Halo */
+.halo {
+  animation: float 4s ease-in-out infinite, spin-slow 25s linear infinite, halo-glow 3s ease-in-out infinite;
+}
+
+.glow-hover {
+  transition: all 0.3s ease;
+}
+.glow-hover:hover {
+  box-shadow: 0 0 15px var(--accent-glow-strong);
+  border-color: var(--border-color-hover);
+  transform: translateY(-2px);
+}
+
+/* Glassmorphism base */
+.glass-panel {
+  background: var(--background-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 8px 32px 0 var(--shadow-color);
+  transition: border-color var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease,
+              background var(--transition-speed) ease,
+              transform 0.3s ease;
+}
+
+/* Responsive Grid container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
