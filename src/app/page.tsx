@@ -3,89 +3,76 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 
-// Type definitions for the Arona dialogue branching system
-type DialogNode = {
-  text: string;
-  options: {
-    label: string;
-    nextNode: string;
-  }[];
-};
+// Shared Types and Dialogue configs
+import { ChatMessage } from "./types";
+import { DIALOG_TREE } from "./config/dialog";
 
-const DIALOG_TREE: Record<string, DialogNode> = {
-  start: {
-    text: "Xin chào Sensei! Hôm nay Arona có thể giúp gì cho Sensei ạ? Em đang truy cập vào cơ sở dữ liệu dự án của Trần Nhân đây!",
-    options: [
-      { label: "Báo cáo nghiên cứu khoa học tại NEU?", nextNode: "research" },
-      { label: "Dự án sinh thái game Aniko là gì?", nextNode: "aniko" },
-      { label: "Hỏi về sở thích Light Novel của Sensei?", nextNode: "hobby" },
-    ],
-  },
-  research: {
-    text: "Báo cáo khoa học: Trần Nhân hiện đang làm Trợ lý Nghiên cứu tại Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU). Cậu ấy chuyên sâu về phân loại văn bản học thuật, Vector Embeddings và hệ thống RAG tìm kiếm thông minh đó Sensei!",
-    options: [
-      { label: "Thật ấn tượng! Còn game Aniko thì sao?", nextNode: "aniko" },
-      { label: "Cậu ấy đang học thêm gì thế?", nextNode: "learning" },
-      { label: "Quay lại menu chính nhé Arona.", nextNode: "start" },
-    ],
-  },
-  aniko: {
-    text: "Aniko là hệ sinh thái Web Game & Database cực đỉnh xoay quanh Anime/Manga! Cậu ấy đã code các mini-game như Anidle, AniTexto (giống variant Contexto) và AniGrid. Cậu ấy tự viết crawl tool lấy data từ các wiki Anime về làm DB riêng nữa!",
-    options: [
-      { label: "Tuyệt quá! Còn nghiên cứu NEU thì sao?", nextNode: "research" },
-      { label: "Arona kể về sở thích dịch LN đi!", nextNode: "hobby" },
-      { label: "Quay lại menu chính nào.", nextNode: "start" },
-    ],
-  },
-  hobby: {
-    text: "Ngoài việc code ra, Sensei Nhân là một otaku chính hiệu! Cậu ấy rất chăm chỉ dịch Light Novel từ tiếng Anh sang tiếng Việt lúc rảnh rỗi, là một Sensei tận tụy trong Blue Archive (Schale) và đang tự học tiếng Nhật để đọc LN gốc nữa!",
-    options: [
-      { label: "Thú vị đấy! Cậu ấy học công nghệ gì mới?", nextNode: "learning" },
-      { label: "Trở lại menu chính nhé.", nextNode: "start" },
-    ],
-  },
-  learning: {
-    text: "Hiện tại cậu ấy đang tập trung học Advanced AI/ML để tối ưu hóa Vector Search và nghiên cứu các mô hình LLM nhỏ gọn chạy offline, song song với việc nâng cao kỹ năng tiếng Nhật (Japanese) để phục vụ công việc tương lai!",
-    options: [
-      { label: "Tuyệt vời! Cho tôi xem dự án Aniko.", nextNode: "aniko" },
-      { label: "Quay lại từ đầu nha Arona.", nextNode: "start" },
-    ],
-  },
-};
+// Shared UI components
+import AronaHalo from "./components/AronaHalo";
+import SkillPopup from "./components/SkillPopup";
+import CampaignStage from "./components/CampaignStage";
+import MomoTalk from "./components/MomoTalk";
+import ProfHUD from "./components/ProfHUD";
+import ProfStats from "./components/ProfStats";
+import AronaChat from "./components/AronaChat";
 
 export default function Home() {
   const [context, setContext] = useState<"tech" | "otaku">("tech");
   const [isWiping, setIsWiping] = useState(false);
   const [dialogKey, setDialogKey] = useState("start");
   const [dialogText, setDialogText] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [formStatus, setFormStatus] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Active student skill modal state (Personal mode)
+  const [activeSkill, setActiveSkill] = useState<"ex" | "normal" | "passive" | "sub" | null>(null);
+
+  // Professional CV Contact Form State
+  const [profName, setProfName] = useState("");
+  const [profEmail, setProfEmail] = useState("");
+  const [profMsg, setProfMsg] = useState("");
+  const [profFormStatus, setProfFormStatus] = useState("");
+
+  // MomoTalk Message History state (Personal Mode)
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
+    {
+      id: 1,
+      sender: "arona",
+      text: "Xin chào Sensei! Em là Arona, trợ lý đắc lực của Sensei Trần Nhân đây! 🌸",
+      time: "21:54"
+    },
+    {
+      id: 2,
+      sender: "arona",
+      text: "Sensei có thể gửi thông điệp kết nối ở ô bên dưới nhé. Em sẽ lưu tin nhắn và báo trực tiếp cho Trần Nhân ngay lập tức ạ! (★ω★)/",
+      time: "21:55"
+    }
+  ]);
+  const [momoNameInput, setMomoNameInput] = useState("");
+  const [momoEmailInput, setMomoEmailInput] = useState("");
+  const [momoMsgInput, setMomoMsgInput] = useState("");
+  const [isAronaTyping, setIsAronaTyping] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wipeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Cinematic screen sweep transition between Tech and Otaku mode
+  // Context switch screen-wipe transition
   const handleContextSwitch = () => {
     if (isWiping) return;
     setIsWiping(true);
 
-    // 1. Wipe covers screen (400ms is peak of transition)
     wipeTimeoutRef.current = setTimeout(() => {
       setContext((prev) => (prev === "tech" ? "otaku" : "tech"));
     }, 400);
 
-    // 2. Wipe leaves screen (800ms animation completed)
     setTimeout(() => {
       setIsWiping(false);
     }, 800);
   };
 
-  // Handle Arona Typewriter Dialogue Animation
+  // Dialogue typewriting animation loop
   useEffect(() => {
     const textToType = DIALOG_TREE[dialogKey]?.text || "";
-    setDialogText("");
-    setIsTyping(true);
 
     let index = 0;
     const interval = setInterval(() => {
@@ -96,12 +83,12 @@ export default function Home() {
         clearInterval(interval);
         setIsTyping(false);
       }
-    }, 15); // Fast typing speed
+    }, 15);
 
     return () => clearInterval(interval);
   }, [dialogKey]);
 
-  // Interactive Neural Network Background Canvas (Tech Mode)
+  // Interactive node canvas background (Professional Mode - Warm Rose Particles)
   useEffect(() => {
     if (context !== "tech" || !canvasRef.current) return;
 
@@ -123,7 +110,6 @@ export default function Home() {
 
     const particleCount = Math.min(60, Math.floor((width * height) / 25000));
 
-    // Initialize particles
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
@@ -134,7 +120,7 @@ export default function Home() {
       });
     }
 
-    let mouse = { x: -1000, y: -1000 };
+    const mouse = { x: -1000, y: -1000 };
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
@@ -156,26 +142,22 @@ export default function Home() {
     window.addEventListener("mouseleave", handleMouseLeave);
     window.addEventListener("resize", handleResize);
 
-    // Animation Loop
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw and update particles
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
 
-        // Bounce boundaries
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0, 240, 255, 0.45)";
+        ctx.fillStyle = "rgba(255, 77, 109, 0.35)"; // Warm Crimson Rose particles
         ctx.fill();
       });
 
-      // Draw connecting lines
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -186,13 +168,12 @@ export default function Home() {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(255, 77, 109, ${0.12 * (1 - dist / 120)})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
         }
 
-        // Connect particles to mouse
         const dxMouse = particles[i].x - mouse.x;
         const dyMouse = particles[i].y - mouse.y;
         const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
@@ -201,7 +182,7 @@ export default function Home() {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(0, 240, 255, ${0.28 * (1 - distMouse / 180)})`;
+          ctx.strokeStyle = `rgba(255, 77, 109, ${0.2 * (1 - distMouse / 180)})`;
           ctx.lineWidth = 1.2;
           ctx.stroke();
         }
@@ -220,24 +201,63 @@ export default function Home() {
     };
   }, [context]);
 
-  // Handle contact form submits
-  const handleFormSubmit = (e: React.FormEvent) => {
+  // Professional form submission
+  const handleProfSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      setFormStatus("Error: Vui lòng điền đầy đủ các thông tin!");
+    if (!profName || !profEmail || !profMsg) {
+      setProfFormStatus("Error: Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    setFormStatus("SENDING");
+    setProfFormStatus("SENDING");
     setTimeout(() => {
-      setFormStatus("SUCCESS");
-      setFormData({ name: "", email: "", message: "" });
-      setTimeout(() => setFormStatus(""), 4000);
-    }, 1200);
+      setProfFormStatus("SUCCESS");
+      setProfName("");
+      setProfEmail("");
+      setProfMsg("");
+      setTimeout(() => setProfFormStatus(""), 6000);
+    }, 1500);
+  };
+
+  // MomoTalk message submission
+  const handleMomoSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!momoNameInput || !momoEmailInput || !momoMsgInput) {
+      alert("Vui lòng điền đầy đủ Tên, Email và lời nhắn của Sensei!");
+      return;
+    }
+
+    const currentHour = new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+
+    const userMsg: ChatMessage = {
+      id: Date.now(),
+      sender: "user",
+      text: `${momoMsgInput} (Tên: ${momoNameInput}, Email: ${momoEmailInput})`,
+      time: currentHour
+    };
+
+    setChatMessages((prev) => [...prev, userMsg]);
+    const sentName = momoNameInput;
+    setMomoMsgInput("");
+    setIsAronaTyping(true);
+
+    setTimeout(() => {
+      const responseHour = new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+      setIsAronaTyping(false);
+      setChatMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          sender: "arona",
+          text: `Arona đã tiếp nhận tin nhắn từ Sensei ${sentName} rồi nhé! Em sẽ gửi trực tiếp đến Trần Nhân qua email ngay lập tức. Cảm ơn Sensei đã liên hệ! o(≧▽≦)o`,
+          time: responseHour
+        }
+      ]);
+    }, 1500);
   };
 
   return (
     <div className={`${styles.page} ${context === "tech" ? "tech-theme" : "otaku-theme"}`}>
-      {/* Background elements */}
+      {/* Background canvas and grid lines */}
       <div className="background-canvas" />
       <div className="scanlines" />
       <div className={`${styles.canvasWrapper} ${context === "tech" ? "" : "hidden"}`}>
@@ -250,10 +270,14 @@ export default function Home() {
       {/* Global Header */}
       <header className={styles.header}>
         <div className={styles.navContainer}>
-          <div className={styles.logo} onClick={() => setDialogKey("start")}>
+          <div className={styles.logo} onClick={() => {
+            setDialogText("");
+            setIsTyping(true);
+            setDialogKey("start");
+          }}>
             <div className={styles.logoDot} />
             <span className={styles.logoText}>
-              {context === "tech" ? "AIKO.OS" : "SCHALE.AIKO"}
+              {context === "tech" ? "TRANNHAN.DEV" : "SCHALE // AIKO"}
             </span>
           </div>
 
@@ -261,22 +285,22 @@ export default function Home() {
             <ul className={styles.navList}>
               <li>
                 <a href="#about" className={styles.navLink}>
-                  Thông Tin
+                  {context === "tech" ? "Thông Tin" : "Hồ Sơ"}
                 </a>
               </li>
               <li>
                 <a href="#projects" className={styles.navLink}>
-                  Dự Án
+                  {context === "tech" ? "Dự Án" : "Chiến Dịch"}
                 </a>
               </li>
               <li>
                 <a href="#skills" className={styles.navLink}>
-                  Kỹ Năng
+                  {context === "tech" ? "Kỹ Năng" : "Kỹ Năng Học Viên"}
                 </a>
               </li>
               <li>
                 <a href="#contact" className={styles.navLink}>
-                  Liên Hệ
+                  {context === "tech" ? "Liên Hệ" : "MomoTalk"}
                 </a>
               </li>
             </ul>
@@ -284,7 +308,7 @@ export default function Home() {
 
           <div className={styles.switcherContainer}>
             <span className={styles.switchLabel}>
-              {context === "tech" ? "🔬 Researcher" : "🎮 Sensei"}
+              {context === "tech" ? "🔬 Professional" : "🎮 Personal"}
             </span>
             <button
               className={styles.switchButton}
@@ -296,22 +320,56 @@ export default function Home() {
                   context === "otaku" ? styles.switchKnobActive : ""
                 }`}
               />
-              <span className={styles.switchIcon}>🔬</span>
-              <span className={styles.switchIcon}>🎮</span>
+              <span className={`${styles.switchIcon} ${styles.switchIconLeft}`} style={{ opacity: context === "tech" ? 1 : 0.4 }}>🔬</span>
+              <span className={`${styles.switchIcon} ${styles.switchIconRight}`} style={{ opacity: context === "otaku" ? 1 : 0.4 }}>🎮</span>
+            </button>
+            <button
+              className={styles.mobileMenuBtn}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? "✕" : "☰"}
             </button>
           </div>
         </div>
       </header>
 
+      {/* Mobile nav menu drawer */}
+      <div className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.active : ""}`}>
+        <ul className={styles.mobileNavList}>
+          <li>
+            <a href="#about" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              {context === "tech" ? "Thông Tin Cá Nhân" : "Hồ Sơ Nhân Vật"}
+            </a>
+          </li>
+          <li>
+            <a href="#projects" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              {context === "tech" ? "Dự Án Công Việc" : "Chiến Dịch Game"}
+            </a>
+          </li>
+          <li>
+            <a href="#skills" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              {context === "tech" ? "Công Nghệ & Kỹ Năng" : "Bảng Kỹ Năng"}
+            </a>
+          </li>
+          <li>
+            <a href="#contact" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              {context === "tech" ? "Gửi Tín Hiệu Liên Hệ" : "Trò Chuyện MomoTalk"}
+            </a>
+          </li>
+        </ul>
+      </div>
+
       {/* Main Content Area */}
       <main className={`${styles.main} container`}>
+        
         {/* HERO SECTION */}
         <section className={styles.heroSection}>
           <div className={styles.heroContent}>
             <div className={styles.tagline}>
               {context === "tech" ? (
                 <>
-                  <span className={styles.logoDot} /> System Online // NEU Researcher
+                  <span className={styles.logoDot} /> Professional CV // NCKH Assistant
                 </>
               ) : (
                 <>🌸 Schale Office // Sensei Level 85</>
@@ -323,283 +381,303 @@ export default function Home() {
             </h1>
             <p className={styles.heroSubtitle}>
               {context === "tech"
-                ? "IT Engineer // NLP & Scientific Research Assistant @ NEU"
-                : "🎌 IT Engineer & Otaku Sensei tận tụy trong Blue Archive"}
+                ? "Software Engineer & Scientific Research Assistant @ NEU"
+                : "🎌 Web Game Developer & Otaku Sensei tận tụy trong Blue Archive"}
             </p>
             <p className={styles.heroBio}>
               {context === "tech"
-                ? "Đam mê kết hợp phân tích dữ liệu, xử lý ngôn ngữ tự nhiên (NLP), tìm kiếm ngữ cảnh RAG và lập trình web chuyên nghiệp để tạo ra các giải pháp phân loại và khai phá tri thức học thuật hiệu quả."
-                : "Thích kết hợp các sở thích cá nhân (Anime, Game, Light Novels) vào thế giới lập trình. Tôi thường xuyên viết tool crawl dữ liệu và xây dựng hệ sinh thái Web Game (Aniko) để lưu trữ cơ sở dữ liệu riêng của mình."}
+                ? "Đam mê kết hợp xử lý ngôn ngữ tự nhiên (NLP), Vector Embeddings và hệ thống RAG tìm kiếm ngữ cảnh thông minh. Hiện đang công tác nghiên cứu học thuật tại Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU) song song lập trình ứng dụng Web chuyên nghiệp."
+                : "Thích kết hợp các sở thích cá nhân (Anime, Game, Light Novels) vào lập trình thế giới số. Tôi đã xây dựng hệ sinh thái Web Game Aniko để lưu trữ cơ sở dữ liệu wiki riêng tự crawl của mình và phát triển các trò chơi giải đố thú vị."}
             </p>
             <div className={styles.ctas}>
               <a href="#projects" className={styles.btnPrimary}>
-                {context === "tech" ? "Xem Dự Án" : "Khám Phá Game Center"}
+                {context === "tech" ? "Xem Dự Án Nghiên Cứu" : "Khám Phá Chiến Dịch"}
               </a>
               <a href="#contact" className={styles.btnSecondary}>
-                Liên Hệ Ngay
+                {context === "tech" ? "Kết Nối Kỹ Sư" : "Trò Chuyện MomoTalk"}
               </a>
             </div>
           </div>
 
-          {/* DYNAMIC CARD (Interactive VN dialogue or glowing HUD card) */}
           <div className={styles.visualNovelCard}>
-            {context === "otaku" && (
-              <div className={styles.haloContainer}>
-                <div className={`${styles.baHalo} halo`} />
-              </div>
+            {context === "otaku" && <AronaHalo />}
+            {context === "tech" ? (
+              <ProfHUD
+                onInitializeContact={() => {
+                  const contactSection = document.getElementById("contact");
+                  if (contactSection) contactSection.scrollIntoView({ behavior: "smooth" });
+                }}
+                onSwitchContext={handleContextSwitch}
+              />
+            ) : (
+              <AronaChat
+                dialogText={dialogText}
+                isTyping={isTyping}
+                dialogKey={dialogKey}
+                onSelectOption={(nextNode) => {
+                  setDialogText("");
+                  setIsTyping(true);
+                  setDialogKey(nextNode);
+                }}
+              />
             )}
-
-            <div className={`${styles.holoFrame} glass-panel`}>
-              <div className={styles.holoHeader}>
-                <span>{context === "tech" ? "SYSTEM_HUD_INTERFACE_V1" : "A.R.O.N.A OS CONNECTED"}</span>
-                <div className={styles.holoIndicator}>
-                  <div className={styles.pingLight} />
-                  <span>ONLINE</span>
-                </div>
-              </div>
-              <div className={styles.holoBody}>
-                {context === "tech" ? (
-                  // TECH MODE HUD
-                  <>
-                    <h3 className={styles.avatarTitle}>
-                      <span>💻</span> Trần Nhân // Portfolio.env
-                    </h3>
-                    <span className={styles.avatarSub}>Cấu hình hệ thống kỹ sư</span>
-                    <div className={styles.dialogText}>
-                      <code style={{ fontSize: "0.85rem", color: "var(--accent)" }}>
-                        $ cat config.json
-                        <br />
-                        {`{`}
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;"role": "Research Assistant & SE",
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;"workplace": "National Economics University",
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;"focus": ["NLP", "Vector Embeddings", "RAG"],
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;"passion": "Subculture Data Analysis"
-                        <br />
-                        {`}`}
-                      </code>
-                    </div>
-                    <div className={styles.dialogOptions}>
-                      <button
-                        className={styles.dialogOptButton}
-                        onClick={() => {
-                          const contactSection = document.getElementById("contact");
-                          if (contactSection) contactSection.scrollIntoView();
-                        }}
-                      >
-                        <span>🚀 Initialize Contact Protocol</span>
-                        <span className={styles.dialogOptIcon}>&gt;</span>
-                      </button>
-                      <button className={styles.dialogOptButton} onClick={handleContextSwitch}>
-                        <span>🎮 Switch Context to Otaku Mode</span>
-                        <span className={styles.dialogOptIcon}>&gt;</span>
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  // OTAKU MODE BLUE ARCHIVE CHAT
-                  <>
-                    <h3 className={styles.avatarTitle}>
-                      <span>Arona</span> // Hỗ Trợ Đắc Lực
-                    </h3>
-                    <span className={styles.avatarSub}>Hệ điều hành Arona OS v1.2</span>
-                    <p className={styles.dialogText}>
-                      {dialogText}
-                      {isTyping && <span className="caret">|</span>}
-                    </p>
-                    <div className={styles.dialogOptions}>
-                      {DIALOG_TREE[dialogKey]?.options.map((opt, i) => (
-                        <button
-                          key={i}
-                          className={styles.dialogOptButton}
-                          onClick={() => !isTyping && setDialogKey(opt.nextNode)}
-                          disabled={isTyping}
-                          style={{ opacity: isTyping ? 0.6 : 1 }}
-                        >
-                          <span>{opt.label}</span>
-                          <span className={styles.dialogOptIcon}>★</span>
-                        </button>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
           </div>
         </section>
 
-        {/* PROFILE & STAT SECTION */}
+        {/* PROFILE PROFILE SECTION */}
         <section id="about" className={styles.section}>
           <div className={styles.sectionTitleContainer}>
             <span className={styles.sectionPre}>
-              {context === "tech" ? "01 // PROFILE" : "01 // THÔNG TIN SENSEI"}
+              {context === "tech" ? "01 // PROFESSIONAL BIO" : "01 // HỒ SƠ NHÂN VẬT"}
             </span>
             <h2 className={styles.sectionTitle}>
-              {context === "tech" ? "Tiểu Sử & Định Hướng" : "Hồ Sơ Nhân Vật"}
+              {context === "tech" ? "Tiểu Sử & Định Hướng Nghiên Cứu" : "Hồ Sơ Sensei"}
             </h2>
           </div>
 
           <div className={styles.aboutGrid}>
             <div className={styles.bioText}>
-              <h3 style={{ fontSize: "1.5rem", color: "var(--accent)" }}>
+              <h3 style={{ fontSize: "1.4rem", color: "var(--accent)", fontWeight: 800 }}>
                 {context === "tech"
-                  ? "Kỹ sư Phần mềm ứng dụng AI"
-                  : "Một Sensei đam mê dịch thuật và lập trình"}
+                  ? "Kỹ sư Phần mềm & Trợ lý Nghiên cứu AI"
+                  : "Một Sensei đam mê lập trình game và dịch LN"}
               </h3>
               <p className={styles.bioParagraph}>
-                Chào mừng đến với không gian cá nhân của tôi! Tôi là Trần Nhân, hiện đang nghiên cứu khoa học, phân tích và phân loại các bài báo khoa học học thuật tại **Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)**. Tôi yêu thích việc xây dựng các công cụ phân tích văn bản thông minh, sử dụng kỹ thuật Vector Embeddings và Retrieval-Augmented Generation (RAG) để giúp quá trình tiếp cận học thuật trở nên trực quan hơn.
+                Chào mừng bạn đến với trang portfolio của tôi! Tôi là Trần Nhân, hiện đang làm Trợ lý Nghiên cứu & Phát triển tại **Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)**. Công việc chính của tôi xoay quanh việc phát triển các thuật toán NLP thông minh, Vector Embeddings và tích hợp mô hình RAG để xử lý dữ liệu nghiên cứu học thuật lớn.
               </p>
               <p className={styles.bioParagraph}>
-                Đồng thời, là một otaku tràn đầy đam mê, tôi không ngần ngại mang các công nghệ hiện đại vào sở thích cá nhân. Dự án nổi bật nhất của tôi là **Aniko** - một nền tảng Web Game & Cơ sở dữ liệu Anime tự crawl để lưu trữ các thông tin Anime/Manga yêu thích của mình và chia sẻ các trò chơi giải đố như Anidle, AniTexto đến cộng đồng cùng sở thích.
+                Bên cạnh nghiên cứu tại trường, tôi là một lập trình viên nhiệt huyết, thích hiện thực hóa các ý tưởng sáng tạo. Tôi xây dựng dự án cá nhân **Aniko** - một hệ sinh thái Web Game với các game giải đố Anime tự code như Anidle, AniTexto và AniGrid. Tôi cũng thường xuyên biên dịch Light Novels Anh - Việt và tự học tiếng Nhật để nâng cao kỹ năng bản thân.
               </p>
             </div>
 
-            {/* STAT CARD */}
-            <div className={`${styles.statCard} glass-panel`}>
-              <div className={styles.statCardHeader}>
-                <span className={styles.statCardTitle}>
-                  {context === "tech" ? "Chỉ Số Kỹ Năng" : "Chỉ Số Nhân Vật"}
-                </span>
-                <span className={styles.statLevel}>LV 85</span>
-              </div>
+            {context === "tech" ? (
+              <ProfStats />
+            ) : (
+              <div className={`${styles.statCard} glass-panel`}>
+                <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
 
-              <div className={styles.statItem}>
-                <div className={styles.statInfo}>
-                  <span className={styles.statLabel}>Lập Trình Web (React/NextJS)</span>
-                  <span className={styles.statVal}>90% // EX</span>
+                <div className={styles.statCardHeader}>
+                  <span className={styles.statCardTitle}>Thông Tin Học Viên (Sensei)</span>
+                  <span className={styles.statLevel}>LV 85</span>
                 </div>
-                <div className={styles.statProgressOuter}>
-                  <div className={styles.statProgressInner} style={{ width: "90%" }} />
-                </div>
-              </div>
 
-              <div className={styles.statItem}>
-                <div className={styles.statInfo}>
-                  <span className={styles.statLabel}>Khoa học Dữ liệu & AI/NLP (RAG)</span>
-                  <span className={styles.statVal}>80% // A+</span>
+                <div className={styles.baStatsGrid}>
+                  <div className={styles.baStatBox}>
+                    <span className={styles.baStatLabel}>Vị Trí</span>
+                    <span className={styles.baStatVal}>Striker</span>
+                  </div>
+                  <div className={styles.baStatBox}>
+                    <span className={styles.baStatLabel}>Vai Trò</span>
+                    <span className={styles.baStatVal}>Attacker</span>
+                  </div>
+                  <div className={styles.baStatBox}>
+                    <span className={styles.baStatLabel}>Trường</span>
+                    <span className={styles.baStatVal}>NEU // Schale</span>
+                  </div>
                 </div>
-                <div className={styles.statProgressOuter}>
-                  <div className={styles.statProgressInner} style={{ width: "80%" }} />
-                </div>
-              </div>
 
-              <div className={styles.statItem}>
-                <div className={styles.statInfo}>
-                  <span className={styles.statLabel}>Dịch Thuật LN (Anh - Việt)</span>
-                  <span className={styles.statVal}>85% // S</span>
+                <div className={styles.baTerrainRow}>
+                  <div className={styles.baTerrainBox}>
+                    <span>VS Code (Urban)</span>
+                    <span className={styles.baTerrainRank}>S</span>
+                  </div>
+                  <div className={styles.baTerrainBox}>
+                    <span>Terminal (Outdoor)</span>
+                    <span className={styles.baTerrainRank}>S</span>
+                  </div>
+                  <div className={styles.baTerrainBox}>
+                    <span>Browser (Indoor)</span>
+                    <span className={styles.baTerrainRank}>A</span>
+                  </div>
                 </div>
-                <div className={styles.statProgressOuter}>
-                  <div className={styles.statProgressInner} style={{ width: "85%" }} />
-                </div>
-              </div>
 
-              <div className={styles.statItem}>
-                <div className={styles.statInfo}>
-                  <span className={styles.statLabel}>Ngôn ngữ Tiếng Nhật</span>
-                  <span className={styles.statVal}>45% // N4/N3 Progress</span>
+                <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--foreground-muted)", textTransform: "uppercase", marginBottom: "8px" }}>
+                  Bảng kỹ năng cá nhân (Click xem chi tiết):
                 </div>
-                <div className={styles.statProgressOuter}>
-                  <div className={styles.statProgressInner} style={{ width: "45%" }} />
+
+                <div className={styles.baSkillsGrid}>
+                  <button className={styles.baSkillBtn} onClick={() => setActiveSkill("ex")}>
+                    <div className={styles.baSkillIcon}>EX</div>
+                    <span className={styles.baSkillName}>Aniko Game</span>
+                  </button>
+                  <button className={styles.baSkillBtn} onClick={() => setActiveSkill("normal")}>
+                    <div className={styles.baSkillIcon}>NM</div>
+                    <span className={styles.baSkillName}>Dịch LN</span>
+                  </button>
+                  <button className={styles.baSkillBtn} onClick={() => setActiveSkill("passive")}>
+                    <div className={styles.baSkillIcon}>PS</div>
+                    <span className={styles.baSkillName}>Tiếng Nhật</span>
+                  </button>
+                  <button className={styles.baSkillBtn} onClick={() => setActiveSkill("sub")}>
+                    <div className={styles.baSkillIcon}>SB</div>
+                    <span className={styles.baSkillName}>Crawl DB</span>
+                  </button>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
+
+        {/* SKILLS DETAIL OVERLAY POPUP */}
+        {activeSkill && (
+          <SkillPopup
+            activeSkill={activeSkill}
+            onClose={() => setActiveSkill(null)}
+          />
+        )}
 
         {/* PROJECTS SECTION */}
         <section id="projects" className={styles.section}>
           <div className={styles.sectionTitleContainer}>
             <span className={styles.sectionPre}>
-              {context === "tech" ? "02 // ECOSYSTEM" : "02 // KHO DỰ ÁN"}
+              {context === "tech" ? "02 // ECOSYSTEM PROJECTS" : "02 // CHIẾN DỊCH KHAI PHÁ"}
             </span>
             <h2 className={styles.sectionTitle}>
-              {context === "tech" ? "Các Dự Án Nổi Bật" : "Hộp Đồ Chơi Công Nghệ"}
+              {context === "tech" ? "Dự Án Nghiên Cứu & Phát Triển" : "Nhiệm Vụ Chiến Dịch"}
             </h2>
           </div>
 
           <div className={styles.projectsGrid}>
-            {/* ANIKO CARD */}
-            <div className={`${styles.projectCard} glass-panel glow-hover`}>
-              <div className={styles.projectIconWrapper}>🎮</div>
-              <h3 className={styles.projectTitle}>Aniko</h3>
-              <p className={styles.projectDesc}>
-                Hệ sinh thái Web Game & Cơ sở dữ liệu xoay quanh văn hóa subculture Anime/Manga. Tích hợp các minigame trí tuệ thú vị như Anidle, AniTexto, AniGrid... giúp kết nối các Otaku.
-              </p>
-              <div className={styles.projectTags}>
-                <span className={styles.projectTag}>JavaScript</span>
-                <span className={styles.projectTag}>React.js</span>
-                <span className={styles.projectTag}>Web Scraping</span>
-                <span className={styles.projectTag}>Game Development</span>
-              </div>
-              <a
-                href="https://github.com/Aiko75/Aniko"
-                target="_blank"
-                rel="noreferrer"
-                className={styles.projectLink}
-              >
-                <span>Xem mã nguồn trên GitHub</span>
-                <span>➔</span>
-              </a>
-            </div>
+            {context === "tech" ? (
+              <>
+                <div className={`${styles.projectCard} glass-panel glow-hover`}>
+                  <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
 
-            {/* NEU RAG SEARCH CARD */}
-            <div className={`${styles.projectCard} glass-panel glow-hover`}>
-              <div className={styles.projectIconWrapper}>🔬</div>
-              <h3 className={styles.projectTitle}>NEU Paper Classifier & RAG</h3>
-              <p className={styles.projectDesc}>
-                Dự án nghiên cứu xây dựng hệ thống tự động phân tích cấu trúc, phân loại các đề tài nghiên cứu khoa học học thuật tại NEU và tìm kiếm ngữ cảnh thông minh bằng RAG.
-              </p>
-              <div className={styles.projectTags}>
-                <span className={styles.projectTag}>Python</span>
-                <span className={styles.projectTag}>NLP</span>
-                <span className={styles.projectTag}>Vector DB</span>
-                <span className={styles.projectTag}>Small LLMs</span>
-              </div>
-              <span className={styles.projectLink} style={{ color: "var(--foreground-muted)" }}>
-                <span>Đang phát triển nghiên cứu</span>
-                <span>🔒</span>
-              </span>
-            </div>
+                  <div className={styles.projectIconWrapper}>🎮</div>
+                  <h3 className={styles.projectTitle}>Aniko</h3>
+                  <p className={styles.projectDesc}>
+                    Hệ sinh thái Web Game và Cơ sở dữ liệu Anime/Manga tổng hợp. Chứa các trò chơi mini giải đố trí tuệ kết nối cộng đồng otaku, sử dụng các thuật toán chuẩn hóa dữ liệu tự động crawl.
+                  </p>
+                  <div className={styles.projectTags}>
+                    <span className={styles.projectTag}>React.js</span>
+                    <span className={styles.projectTag}>JavaScript</span>
+                    <span className={styles.projectTag}>Python Crawler</span>
+                    <span className={styles.projectTag}>Database Design</span>
+                  </div>
+                  <a
+                    href="https://github.com/Aiko75/Aniko"
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.projectLink}
+                  >
+                    <span>Xem mã nguồn dự án trên GitHub</span>
+                    <span>➔</span>
+                  </a>
+                </div>
 
-            {/* CONTEXT-AWARE CARD */}
-            <div className={`${styles.projectCard} glass-panel glow-hover`}>
-              <div className={styles.projectIconWrapper}>🔄</div>
-              <h3 className={styles.projectTitle}>Context-Aware Switcher</h3>
-              <p className={styles.projectDesc}>
-                Hệ thống linh hoạt cho phép chuyển đổi ngữ cảnh giao diện và luồng thông tin thông minh giữa nội dung Anime thông thường và nội dung Subculture sâu rộng (H-Anime) một cách an toàn.
-              </p>
-              <div className={styles.projectTags}>
-                <span className={styles.projectTag}>Next.js</span>
-                <span className={styles.projectTag}>React Context</span>
-                <span className={styles.projectTag}>CSS Variables</span>
-                <span className={styles.projectTag}>Auth System</span>
-              </div>
-              <span className={styles.projectLink} style={{ color: "var(--foreground-muted)" }}>
-                <span>Nằm trong hệ sinh thái Aniko</span>
-                <span>🔒</span>
-              </span>
-            </div>
+                <div className={`${styles.projectCard} glass-panel glow-hover`}>
+                  <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
+
+                  <div className={styles.projectIconWrapper}>🔬</div>
+                  <h3 className={styles.projectTitle}>NEU Paper Classifier & RAG</h3>
+                  <p className={styles.projectDesc}>
+                    Dự án nghiên cứu xây dựng hệ thống tự động phân loại các bài viết học thuật tại NEU dựa trên NLP. Kết hợp Vector Database và Small LLMs để truy xuất thông tin, hỗ trợ sinh viên nghiên cứu.
+                  </p>
+                  <div className={styles.projectTags}>
+                    <span className={styles.projectTag}>Python</span>
+                    <span className={styles.projectTag}>NLP</span>
+                    <span className={styles.projectTag}>ChromaDB</span>
+                    <span className={styles.projectTag}>RAG Model</span>
+                  </div>
+                  <span className={styles.projectLink} style={{ color: "var(--foreground-muted)", cursor: "default" }}>
+                    <span>Nghiên cứu học thuật đang tiến hành</span>
+                    <span>🔒</span>
+                  </span>
+                </div>
+
+                <div className={`${styles.projectCard} glass-panel glow-hover`}>
+                  <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
+
+                  <div className={styles.projectIconWrapper}>🔄</div>
+                  <h3 className={styles.projectTitle}>Context-Aware Switcher</h3>
+                  <p className={styles.projectDesc}>
+                    Hệ thống chuyển đổi ngữ cảnh giao diện thông minh sử dụng React Context API kết hợp dynamic CSS Variables, cho phép thay đổi dữ liệu và bộ style tương thích tức thì.
+                  </p>
+                  <div className={styles.projectTags}>
+                    <span className={styles.projectTag}>Next.js</span>
+                    <span className={styles.projectTag}>React Context</span>
+                    <span className={styles.projectTag}>CSS Variables</span>
+                  </div>
+                  <span className={styles.projectLink} style={{ color: "var(--foreground-muted)", cursor: "default" }}>
+                    <span>Tích hợp trực tiếp trong Aniko</span>
+                    <span>🔒</span>
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <CampaignStage
+                  area="AREA 1-1 // STRIKER"
+                  title="Aniko Game Center"
+                  stars={3}
+                  desc="Cổng game mini giải đố Anime: Anidle, AniTexto... sử dụng hệ cơ sở dữ liệu anime tự xây dựng."
+                  drops={[
+                    { icon: "⚛️", name: "React.js" },
+                    { icon: "🕸️", name: "Crawler" },
+                    { icon: "🎨", name: "Vanilla CSS" }
+                  ]}
+                  actionLabel="START TASK"
+                  actionUrl="https://github.com/Aiko75/Aniko"
+                />
+                
+                <CampaignStage
+                  area="AREA 1-2 // CAMPAIGN"
+                  title="NEU Document Classifier & RAG"
+                  stars={2}
+                  desc="Thuật toán tự động phân loại văn bản học thuật NEU và gợi ý tài liệu thông minh dựa trên ngữ cảnh Vector."
+                  drops={[
+                    { icon: "🐍", name: "Python" },
+                    { icon: "🧠", name: "NLP Model" },
+                    { icon: "📁", name: "Vector DB" }
+                  ]}
+                  actionLabel="RESEARCHING"
+                  badgeColor="var(--accent-secondary)"
+                  isActive={false}
+                />
+
+                <CampaignStage
+                  area="AREA 1-3 // SUPPORT"
+                  title="Context Switcher System"
+                  stars={3}
+                  desc="Hệ thống chuyển đổi theme/data động dựa trên React Context API giúp cá nhân hóa cấu trúc website."
+                  drops={[
+                    { icon: "🌐", name: "Next.js" },
+                    { icon: "⚡", name: "React Context" }
+                  ]}
+                  actionLabel="ACTIVE IN SYSTEM"
+                  isActive={true}
+                />
+              </>
+            )}
           </div>
         </section>
 
-        {/* SKILLS & TIMELINE SECTION */}
+        {/* SKILLS MAP & TIMELINE SECTION */}
         <section id="skills" className={styles.section}>
           <div className={styles.skillsSectionGrid}>
-            {/* TECHNICAL STACK */}
             <div>
               <div className={styles.sectionTitleContainer}>
-                <span className={styles.sectionPre}>03 // TECH STACK</span>
-                <h2 className={styles.sectionTitle}>Công Nghệ Sử Dụng</h2>
+                <span className={styles.sectionPre}>03 // KNOWLEDGE & TECH STACK</span>
+                <h2 className={styles.sectionTitle}>Bản Đồ Công Nghệ</h2>
               </div>
               <div className={styles.skillsColumn}>
                 <div>
-                  <h4 className={styles.skillsTitle}>💻 Lập Trình Frontend</h4>
+                  <h4 className={styles.skillsTitle}>🌐 Lập Trình Frontend</h4>
                   <div className={styles.skillPillContainer}>
                     <span className={styles.skillPill}>HTML5 / CSS3</span>
-                    <span className={styles.skillPill}>JavaScript</span>
+                    <span className={styles.skillPill}>JavaScript (ES6+)</span>
                     <span className={styles.skillPill}>TypeScript</span>
                     <span className={styles.skillPill}>React.js</span>
                     <span className={styles.skillPill}>Next.js</span>
@@ -608,59 +686,69 @@ export default function Home() {
                 </div>
 
                 <div style={{ marginTop: "16px" }}>
-                  <h4 className={styles.skillsTitle}>⚙️ Backend & AI</h4>
+                  <h4 className={styles.skillsTitle}>⚙️ Backend & AI Research</h4>
                   <div className={styles.skillPillContainer}>
                     <span className={styles.skillPill}>Node.js / Express</span>
                     <span className={styles.skillPill}>Python</span>
                     <span className={styles.skillPill}>FastAPI</span>
-                    <span className={styles.skillPill}>NLP (Natural Language Processing)</span>
-                    <span className={styles.skillPill}>Vector Embeddings</span>
-                    <span className={styles.skillPill}>Chroma / Pinecone DB</span>
-                    <span className={styles.skillPill}>RAG Models</span>
+                    <span className={styles.skillPill}>NLP Algorithms</span>
+                    <span className={styles.skillPill}>Vector Database (Chroma)</span>
+                    <span className={styles.skillPill}>RAG Pipelines</span>
                   </div>
                 </div>
 
                 <div style={{ marginTop: "16px" }}>
-                  <h4 className={styles.skillsTitle}>🎒 Khác & Kỹ Năng Mềm</h4>
+                  <h4 className={styles.skillsTitle}>🎓 Kỹ Năng Hỗ Trợ</h4>
                   <div className={styles.skillPillContainer}>
-                    <span className={styles.skillPill}>Git / GitHub Versioning</span>
-                    <span className={styles.skillPill}>Web Data Scraping (Crawling)</span>
+                    <span className={styles.skillPill}>Git / GitHub</span>
+                    <span className={styles.skillPill}>Web Scraping (BeautifulSoup/Playwright)</span>
                     <span className={styles.skillPill}>SQLite / PostgreSQL</span>
-                    <span className={styles.skillPill}>English-to-Vietnamese Translation</span>
-                    <span className={styles.skillPill}>Japanese (Tiếng Nhật N4/N3)</span>
+                    <span className={styles.skillPill}>English translation</span>
+                    <span className={styles.skillPill}>Japanese Basic (Tự học N4)</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* ACADEMIC RESEARCH TIMELINE */}
             <div>
               <div className={styles.sectionTitleContainer}>
-                <span className={styles.sectionPre}>04 // NEU TIMELINE</span>
-                <h2 className={styles.sectionTitle}>Nghiên Cứu Khoa Học</h2>
+                <span className={styles.sectionPre}>04 // NEU RESEARCH CHRONICLE</span>
+                <h2 className={styles.sectionTitle}>
+                  {context === "tech" ? "Hoạt Động Nghiên Cứu" : "Nhật Ký Lịch Sử"}
+                </h2>
               </div>
               <div className={styles.timeline}>
                 <div className={`${styles.timelineItem} glass-panel`}>
+                  <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
+
                   <div className={styles.timelineHeader}>
-                    <h3 className={styles.timelineTitle}>Trợ lý Nghiên cứu & Phát triển</h3>
+                    <h3 className={styles.timelineTitle}>Trợ lý Nghiên cứu Khoa học & NLP</h3>
                     <span className={styles.timelinePeriod}>Hiện tại</span>
                   </div>
                   <div className={styles.timelineSub}>
                     Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)
                   </div>
                   <p className={styles.timelineContent}>
-                    Tham gia xây dựng các thuật toán phân tích văn bản chuyên sâu để tự động nhận dạng cấu trúc, phân loại, sắp xếp các bài viết và bài báo học thuật theo đề tài nghiên cứu của Khoa Công nghệ. Tối ưu cơ sở dữ liệu Vector để cải thiện độ chính xác cho hệ gợi ý học tập.
+                    Phát triển và triển khai hệ thống phân loại bài viết khoa học bằng xử lý ngôn ngữ tự nhiên (NLP). Xây dựng cấu trúc cơ sở dữ liệu Vector để tối ưu khả năng tìm kiếm ngữ cảnh (RAG), hỗ trợ các đề tài nghiên cứu của trường.
                   </p>
                 </div>
 
                 <div className={`${styles.timelineItem} glass-panel`}>
+                  <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                  <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
+
                   <div className={styles.timelineHeader}>
                     <h3 className={styles.timelineTitle}>Crawl & Xây dựng Database Wiki</h3>
                     <span className={styles.timelinePeriod}>2025 - 2026</span>
                   </div>
-                  <div className={styles.timelineSub}>Dự án Kho Cơ sở dữ liệu Subculture</div>
+                  <div className={styles.timelineSub}>Hệ Cơ sở dữ liệu Anime tự động</div>
                   <p className={styles.timelineContent}>
-                    Thiết kế và triển khai hệ crawler tự động thu thập thông tin Anime, nhân vật, cốt truyện từ các trang fandom/wiki tiếng Anh, làm sạch dữ liệu và cấu trúc hóa lưu trữ cục bộ dưới dạng quan hệ để cung cấp dữ liệu cho game.
+                    Viết các công cụ crawler thu thập lượng lớn dữ liệu Anime/Manga từ các fandom wiki lớn. Thiết kế hệ thống làm sạch và chuẩn hóa dữ liệu quan hệ cục bộ phục vụ các minigame cá nhân.
                   </p>
                 </div>
               </div>
@@ -671,18 +759,25 @@ export default function Home() {
         {/* CONTACT SECTION */}
         <section id="contact" className={styles.section}>
           <div className={styles.sectionTitleContainer}>
-            <span className={styles.sectionPre}>05 // CONTACT PROTOCOL</span>
-            <h2 className={styles.sectionTitle}>Liên Hệ Với Trần Nhân</h2>
+            <span className={styles.sectionPre}>05 // COMMUNICATIONS</span>
+            <h2 className={styles.sectionTitle}>
+              {context === "tech" ? "Gửi Tín Hiệu Liên Hệ" : "Kênh Trò Chuyện MomoTalk"}
+            </h2>
           </div>
 
           <div className={styles.contactGrid}>
             <div className={`${styles.contactInfoCard} glass-panel`}>
+              <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+              <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+              <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+              <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
+
               <div className={styles.contactIntro}>
-                <h3 style={{ fontSize: "1.4rem", color: "var(--accent)" }}>
-                  {context === "tech" ? "Gửi Tín Hiệu Kết Nối" : "Gửi Thư Về Văn Phòng Schale"}
+                <h3 style={{ fontSize: "1.3rem", color: "var(--accent)", fontWeight: 800 }}>
+                  {context === "tech" ? "Gửi Thông Điệp" : "Văn Phòng Trực Thuộc"}
                 </h3>
-                <p style={{ fontSize: "0.95rem", lineHeight: 1.6, color: "var(--foreground-muted)" }}>
-                  Tôi luôn sẵn lòng thảo luận về các dự án lập trình web game thú vị, các cơ hội nghiên cứu AI/NLP/RAG tại trường, hoặc đơn giản là cùng đàm đạo về Anime và Light Novel!
+                <p style={{ fontSize: "0.92rem", lineHeight: 1.6, color: "var(--foreground-muted)" }}>
+                  Tôi luôn sẵn lòng trao đổi về lập trình web game, các nghiên cứu NLP/RAG tại NEU, hoặc đàm đạo về Anime và Light Novels!
                 </p>
               </div>
 
@@ -694,9 +789,7 @@ export default function Home() {
                 >
                   <div className={styles.contactIcon}>✉</div>
                   <div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--foreground-muted)" }}>
-                      EMAIL LIÊN HỆ
-                    </div>
+                    <div style={{ fontSize: "0.72rem", color: "var(--foreground-muted)" }}>EMAIL HỆ THỐNG</div>
                     <div>trannhan07052005@gmail.com</div>
                   </div>
                 </a>
@@ -706,13 +799,11 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                   className={styles.contactLinkItem}
-                  title="Ghé thăm GitHub cá nhân"
+                  title="Ghé thăm GitHub"
                 >
                   <div className={styles.contactIcon}>🐙</div>
                   <div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--foreground-muted)" }}>
-                      GITHUB PROFILE
-                    </div>
+                    <div style={{ fontSize: "0.72rem", color: "var(--foreground-muted)" }}>GITHUB PROFILE</div>
                     <div>github.com/Aiko75</div>
                   </div>
                 </a>
@@ -726,9 +817,7 @@ export default function Home() {
                 >
                   <div className={styles.contactIcon}>📘</div>
                   <div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--foreground-muted)" }}>
-                      FACEBOOK CÁ NHÂN
-                    </div>
+                    <div style={{ fontSize: "0.72rem", color: "var(--foreground-muted)" }}>FACEBOOK CÁ NHÂN</div>
                     <div>thongminh.conga.73</div>
                   </div>
                 </a>
@@ -738,82 +827,97 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                   className={styles.contactLinkItem}
-                  title="Ghé thăm kênh YouTube"
+                  title="Ghé thăm Youtube"
                 >
                   <div className={styles.contactIcon}>▶</div>
                   <div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--foreground-muted)" }}>
-                      YOUTUBE CHANNEL
-                    </div>
+                    <div style={{ fontSize: "0.72rem", color: "var(--foreground-muted)" }}>YOUTUBE CHANNEL</div>
                     <div>@Nhako7525</div>
                   </div>
                 </a>
               </div>
             </div>
 
-            {/* INPUT FORM */}
-            <div className={`${styles.formCard} glass-panel`}>
-              <form onSubmit={handleFormSubmit}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="name">Tên của bạn / Organization</label>
-                  <input
-                    type="text"
-                    id="name"
-                    className={styles.inputField}
-                    placeholder={context === "tech" ? "John Doe" : "Sensei đồng nghiệp..."}
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  />
-                </div>
+            {context === "tech" ? (
+              <div className={`${styles.formCard} glass-panel`}>
+                <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
 
-                <div className={styles.formGroup} style={{ marginTop: "16px" }}>
-                  <label htmlFor="email">Địa chỉ Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    className={styles.inputField}
-                    placeholder="email@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </div>
-
-                <div className={styles.formGroup} style={{ marginTop: "16px" }}>
-                  <label htmlFor="message">Nội dung tin nhắn</label>
-                  <textarea
-                    id="message"
-                    className={styles.textareaField}
-                    placeholder={
-                      context === "tech"
-                        ? "Đề xuất hợp tác hoặc câu hỏi của bạn..."
-                        : "Nhắn nhủ gì đó đến Trần Nhân..."
-                    }
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className={styles.btnPrimary}
-                  style={{ width: "100%", marginTop: "24px" }}
-                >
-                  {formStatus === "SENDING" ? "Đang xử lý gói tin..." : "Gửi Tin Nhắn"}
-                </button>
-
-                {formStatus === "SUCCESS" && (
-                  <div className={styles.terminalFeedback}>
-                    [SYSTEM_LOG]: Gửi thành công! Gói tin đã được lưu vào hàng đợi và gửi tới hộp thư của Trần Nhân. Cảm ơn bạn!
+                <form onSubmit={handleProfSubmit}>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="profName">Tên người gửi / Tổ chức</label>
+                    <input
+                      type="text"
+                      id="profName"
+                      className={styles.inputField}
+                      placeholder="Nhập tên của bạn..."
+                      value={profName}
+                      onChange={(e) => setProfName(e.target.value)}
+                    />
                   </div>
-                )}
 
-                {formStatus.startsWith("Error") && (
-                  <div className={styles.terminalFeedback} style={{ color: "#ff3366", borderColor: "#551122" }}>
-                    [SYSTEM_ERROR]: {formStatus}
+                  <div className={styles.formGroup} style={{ marginTop: "12px" }}>
+                    <label htmlFor="profEmail">Địa chỉ Email liên hệ</label>
+                    <input
+                      type="email"
+                      id="profEmail"
+                      className={styles.inputField}
+                      placeholder="email@example.com"
+                      value={profEmail}
+                      onChange={(e) => setProfEmail(e.target.value)}
+                    />
                   </div>
-                )}
-              </form>
-            </div>
+
+                  <div className={styles.formGroup} style={{ marginTop: "12px" }}>
+                    <label htmlFor="profMsg">Nội dung tin nhắn</label>
+                    <textarea
+                      id="profMsg"
+                      className={styles.textareaField}
+                      placeholder="Nhập nội dung đề xuất hoặc câu hỏi của bạn..."
+                      value={profMsg}
+                      onChange={(e) => setProfMsg(e.target.value)}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={styles.btnPrimary}
+                    style={{ width: "100%", marginTop: "16px" }}
+                    disabled={profFormStatus === "SENDING"}
+                  >
+                    {profFormStatus === "SENDING" ? "Đang xử lý gói tin..." : "Gửi Tin Nhắn"}
+                  </button>
+
+                  {profFormStatus === "SUCCESS" && (
+                    <div className={styles.terminalFeedback}>
+                      [SYSTEM_LOG]: Khởi tạo SMTP thành công.
+                      <br />
+                      [SYSTEM_LOG]: Truyền phát gói tin thành công đến Trần Nhân. Cảm ơn bạn!
+                    </div>
+                  )}
+
+                  {profFormStatus.startsWith("Error") && (
+                    <div className={styles.terminalFeedback} style={{ color: "#ff4d4d", borderColor: "rgba(255, 77, 77, 0.3)" }}>
+                      [SYSTEM_ERROR]: {profFormStatus}
+                    </div>
+                  )}
+                </form>
+              </div>
+            ) : (
+              <MomoTalk
+                chatMessages={chatMessages}
+                momoNameInput={momoNameInput}
+                setMomoNameInput={setMomoNameInput}
+                momoEmailInput={momoEmailInput}
+                setMomoEmailInput={setMomoEmailInput}
+                momoMsgInput={momoMsgInput}
+                setMomoMsgInput={setMomoMsgInput}
+                isAronaTyping={isAronaTyping}
+                onSubmit={handleMomoSubmit}
+              />
+            )}
           </div>
         </section>
       </main>
@@ -825,7 +929,7 @@ export default function Home() {
           <p style={{ fontSize: "0.75rem", marginTop: "8px", opacity: 0.6 }}>
             {context === "tech"
               ? "STATUS: COGNITIVE DECOUPLING MODULE ACTIVE"
-              : "STATUS: ARONA IS CURRENTLY SLEEPING ON SCHALE COUCH"}
+              : "STATUS: ARONA IS EATING STRAWBERRY CAKE ON SCHALE COUCH"}
           </p>
         </div>
       </footer>

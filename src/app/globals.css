@@ -9,38 +9,39 @@
   --border-radius-lg: 24px;
 }
 
-/* 🔬 TECH MODE: Cyber Dark Theme */
+/* 🔬 PROFESSIONAL MODE (Default): Sleek Warm Dark Theme */
 .tech-theme {
-  --background: #030816;
-  --background-alt: #071026;
-  --background-card: rgba(7, 18, 44, 0.65);
-  --foreground: #e6efff;
-  --foreground-muted: #8fa0c2;
-  --accent: #00f0ff;
-  --accent-secondary: #8a2be2;
-  --accent-glow: rgba(0, 240, 255, 0.15);
-  --accent-glow-strong: rgba(0, 240, 255, 0.4);
-  --border-color: rgba(0, 240, 255, 0.15);
-  --border-color-hover: rgba(0, 240, 255, 0.4);
-  --shadow-color: rgba(0, 240, 255, 0.1);
-  --scanline-color: rgba(0, 240, 255, 0.03);
+  --background: #12090d; /* Deep warm burgundy black */
+  --background-alt: #1a0f14; /* Warm burgundy-grey */
+  --background-card: rgba(26, 15, 20, 0.8);
+  --foreground: #fcf6f8; /* Soft rose-white */
+  --foreground-muted: #cfa8b5; /* Warm dusty rose */
+  --accent: #ff4d6d; /* Warm Rose */
+  --accent-secondary: #ff9e00; /* Warm Sunset Orange/Gold */
+  --accent-glow: rgba(255, 77, 109, 0.08);
+  --accent-glow-strong: rgba(255, 77, 109, 0.3);
+  --border-color: rgba(255, 77, 109, 0.2);
+  --border-color-hover: rgba(255, 77, 109, 0.45);
+  --shadow-color: rgba(26, 15, 20, 0.4);
+  --scanline-color: rgba(255, 77, 109, 0.01);
 }
 
-/* 🎮 OTAKU MODE: Blue Archive Inspired Light Theme */
+/* 🎮 PERSONAL MODE: Blue Archive Inspired Light Theme */
 .otaku-theme {
-  --background: #f2f7fc;
+  --background: #f5f9fc; /* Soft warm light blue-white */
   --background-alt: #ffffff;
-  --background-card: rgba(255, 255, 255, 0.9);
-  --foreground: #1c2b42;
-  --foreground-muted: #627795;
-  --accent: #128aff; /* Schale Blue */
-  --accent-secondary: #ff7695; /* Arona Pink */
-  --accent-glow: rgba(18, 138, 255, 0.08);
-  --accent-glow-strong: rgba(18, 138, 255, 0.25);
-  --border-color: rgba(18, 138, 255, 0.12);
-  --border-color-hover: rgba(18, 138, 255, 0.35);
-  --shadow-color: rgba(18, 138, 255, 0.08);
-  --scanline-color: rgba(18, 138, 255, 0.02);
+  --background-card: rgba(255, 255, 255, 0.95);
+  --foreground: #22374d; /* Soft navy */
+  --foreground-muted: #677f98; /* Muted navy-grey */
+  --accent: #00a6ff; /* Schale Sky Blue */
+  --accent-secondary: #ff6b95; /* Arona Pink */
+  --accent-yellow: #ffb000; /* Warm BA Amber Gold */
+  --accent-glow: rgba(0, 166, 255, 0.08);
+  --accent-glow-strong: rgba(0, 166, 255, 0.22);
+  --border-color: rgba(0, 166, 255, 0.16);
+  --border-color-hover: rgba(0, 166, 255, 0.4);
+  --shadow-color: rgba(0, 166, 255, 0.06);
+  --scanline-color: rgba(0, 166, 255, 0.01);
 }
 
 /* Reset and Core Styles */
@@ -109,8 +110,8 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255, 77, 109, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 77, 109, 0.04) 1px, transparent 1px);
   background-size: 40px 40px;
   mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 85%);
   animation: grid-pulse 8s infinite alternate ease-in-out;
@@ -122,22 +123,22 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 0;
   background-image: 
-    repeating-linear-gradient(45deg, rgba(18, 138, 255, 0.015) 0px, rgba(18, 138, 255, 0.015) 2px, transparent 2px, transparent 15px),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(242, 247, 252, 0.5) 100%);
+    repeating-linear-gradient(45deg, rgba(0, 166, 255, 0.012) 0px, rgba(0, 166, 255, 0.012) 2px, transparent 2px, transparent 15px),
+    repeating-linear-gradient(-45deg, rgba(255, 107, 149, 0.008) 0px, rgba(255, 107, 149, 0.008) 2px, transparent 2px, transparent 30px);
   background-size: 100% 100%;
 }
 
 .otaku-theme .background-canvas::after {
   content: "";
   position: absolute;
-  width: 400px;
-  height: 400px;
-  top: -100px;
-  right: -100px;
-  background: radial-gradient(circle, rgba(18, 138, 255, 0.06) 0%, transparent 70%);
+  width: 600px;
+  height: 600px;
+  top: -150px;
+  right: -150px;
+  background: radial-gradient(circle, rgba(0, 166, 255, 0.04) 0%, rgba(255, 107, 149, 0.03) 50%, transparent 80%);
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(40px);
+  filter: blur(50px);
 }
 
 /* Global Scanlines */
