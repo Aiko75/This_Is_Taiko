@@ -70,7 +70,7 @@ export default function CampaignStage({
       ) : (
         <button 
           className={styles.stageButton} 
-          style={!isActive ? { backgroundColor: "#9ca3af", cursor: "not-allowed", boxShadow: "none" } : { backgroundColor: "var(--accent)", boxShadow: "0 3px 10px rgba(0, 166, 255, 0.2)" }} 
+          style={!isActive ? { backgroundColor: "#9ca3af", cursor: "not-allowed", boxShadow: "none" } : { backgroundColor: "var(--accent)", boxShadow: "0 3px 10px var(--accent-glow-strong)" }} 
           disabled={!isActive}
         >
           <span>{actionLabel}</span>

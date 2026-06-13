@@ -8,7 +8,7 @@ export type DialogNode = {
 
 export type ChatMessage = {
   id: number;
-  sender: "arona" | "user";
+  sender: "arona" | "plana" | "user";
   text: string;
   time: string;
 };

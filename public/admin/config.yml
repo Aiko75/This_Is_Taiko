@@ -1,0 +1,102 @@
+backend:
+  name: github
+  repo: Aiko75/This_Is_Taiko
+  branch: main
+
+# Hỗ trợ chạy test CMS offline qua proxy local
+local_backend: true
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "website_data"
+    label: "Dữ liệu Website"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "profile"
+        label: "Thông tin cá nhân & Kỹ năng"
+        file: "src/app/config/profile.json"
+        fields:
+          - { label: "Họ và Tên", name: "name", widget: "string" }
+          - { label: "Chức danh giới thiệu", name: "title", widget: "string" }
+          - { label: "Tiểu sử ngắn", name: "bio", widget: "text" }
+          - { label: "Sensei Level", name: "level", widget: "number", value_type: "int" }
+          - { label: "Vị trí", name: "position", widget: "string" }
+          - { label: "Vai trò", name: "role", widget: "string" }
+          - { label: "Trường học / Văn phòng", name: "affiliation", widget: "string" }
+          - label: "Địa hình hoạt động (Terrain Ranks)"
+            name: "terrainRanks"
+            widget: "list"
+            fields:
+              - { label: "Môi trường (Ví dụ: VS Code (Urban))", name: "name", widget: "string" }
+              - { label: "Xếp hạng (S/A/B)", name: "rank", widget: "string" }
+          - label: "Kỹ năng đặc biệt (Sensei Skills)"
+            name: "skills"
+            widget: "object"
+            fields:
+              - label: "Kỹ năng EX (Aniko Game)"
+                name: "ex"
+                widget: "object"
+                fields:
+                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
+                  - { label: "Mô tả", name: "desc", widget: "text" }
+              - label: "Kỹ năng Thường (Normal)"
+                name: "normal"
+                widget: "object"
+                fields:
+                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
+                  - { label: "Mô tả", name: "desc", widget: "text" }
+              - label: "Kỹ năng Bị động (Passive)"
+                name: "passive"
+                widget: "object"
+                fields:
+                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
+                  - { label: "Mô tả", name: "desc", widget: "text" }
+              - label: "Kỹ năng Hỗ trợ (Sub)"
+                name: "sub"
+                widget: "object"
+                fields:
+                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
+                  - { label: "Mô tả", name: "desc", widget: "text" }
+          - label: "Bản đồ Công nghệ (Tech Stack)"
+            name: "techStack"
+            widget: "list"
+            fields:
+              - { label: "Tên nhóm (Ví dụ: Frontend)", name: "category", widget: "string" }
+              - { label: "Danh sách công nghệ", name: "items", widget: "list", field: { name: "item", widget: "string" } }
+          - label: "Hoạt động & Lịch sử (Timeline)"
+            name: "timeline"
+            widget: "list"
+            fields:
+              - { label: "Tiêu đề công việc/hoạt động", name: "title", widget: "string" }
+              - { label: "Thời gian thực hiện", name: "period", widget: "string" }
+              - { label: "Đơn vị/Tổ chức", name: "sub", widget: "string" }
+              - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
+
+      - name: "projects_collection"
+        label: "Danh sách dự án"
+        file: "src/app/config/projects.json"
+        fields:
+          - label: "Danh sách dự án"
+            name: "projects"
+            widget: "list"
+            fields:
+              - { label: "ID dự án (không dấu, vd: aniko)", name: "id", widget: "string" }
+              - { label: "Mã khu vực (Khu vực // Phân loại)", name: "area", widget: "string" }
+              - { label: "Tên dự án", name: "title", widget: "string" }
+              - { label: "Phân loại (game/research/tool)", name: "category", widget: "select", options: ["game", "research", "tool"] }
+              - { label: "Mô tả ngắn", name: "desc", widget: "text" }
+              - { label: "Tags", name: "tags", widget: "list", field: { name: "tag", widget: "string" } }
+              - { label: "Đánh giá độ sao (1-3)", name: "stars", widget: "number", value_type: "int" }
+              - label: "Vật phẩm rơi (Drops icon & name)"
+                name: "drops"
+                widget: "list"
+                fields:
+                  - { label: "Icon Emoji", name: "icon", widget: "string" }
+                  - { label: "Tên công nghệ", name: "name", widget: "string" }
+              - { label: "Nhãn hành động (VD: START TASK)", name: "actionLabel", widget: "string" }
+              - { label: "Đường dẫn liên kết (URL)", name: "url", widget: "string", required: false }
+              - { label: "Kích hoạt", name: "isActive", widget: "boolean" }

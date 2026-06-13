@@ -16,12 +16,7 @@ export default function AronaChat({
   onSelectOption
 }: AronaChatProps) {
   return (
-    <div className={`${styles.holoFrame} glass-panel`}>
-      <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
-      <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
-      <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
-      <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
-
+    <>
       <div className={styles.holoHeader}>
         <span>A.R.O.N.A OS CONNECTED</span>
         <div className={styles.holoIndicator}>
@@ -58,6 +53,6 @@ export default function AronaChat({
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }

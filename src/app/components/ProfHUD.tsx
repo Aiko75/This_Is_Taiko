@@ -3,17 +3,11 @@ import styles from "../page.module.css";
 
 type ProfHUDProps = {
   onInitializeContact: () => void;
-  onSwitchContext: () => void;
 };
 
-export default function ProfHUD({ onInitializeContact, onSwitchContext }: ProfHUDProps) {
+export default function ProfHUD({ onInitializeContact }: ProfHUDProps) {
   return (
-    <div className={`${styles.holoFrame} glass-panel`}>
-      <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
-      <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
-      <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
-      <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
-
+    <>
       <div className={styles.holoHeader}>
         <span>SYSTEM_HUD_INTELLIGENCE_V1.5</span>
         <div className={styles.holoIndicator}>
@@ -52,16 +46,13 @@ export default function ProfHUD({ onInitializeContact, onSwitchContext }: ProfHU
           <button
             className={styles.dialogOptButton}
             onClick={onInitializeContact}
+            style={{ width: "100%" }}
           >
             <span>🚀 Khởi động truyền tin liên hệ</span>
             <span className={styles.dialogOptIcon}>&gt;</span>
           </button>
-          <button className={styles.dialogOptButton} onClick={onSwitchContext}>
-            <span>🎮 Chuyển đổi sang Hồ Sơ Cá Nhân</span>
-            <span className={styles.dialogOptIcon}>&gt;</span>
-          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

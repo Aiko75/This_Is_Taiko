@@ -183,83 +183,42 @@
   }
 }
 
-/* Context Switcher Button */
-.switcherContainer {
+/* Hero Panel Tabs */
+.heroTabs {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  width: 100%;
+  background: rgba(26, 15, 20, 0.4);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.switchLabel {
-  font-size: 0.75rem;
+.heroTabBtn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--foreground-muted);
+  padding: 12px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--foreground-muted);
-  line-height: 1;
-}
-
-.switchButton {
-  position: relative;
-  width: 110px;
-  height: 36px;
-  border-radius: 18px;
-  background-color: var(--background-alt);
-  border: 2px solid var(--border-color);
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-}
-
-.switchButton:hover {
-  border-color: var(--accent);
-}
-
-.switchKnob {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 2px 8px var(--accent-glow-strong);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 1;
-}
-
-.switchKnobActive {
-  transform: translateX(74px);
-  background: var(--accent-secondary);
-  box-shadow: 0 2px 8px rgba(255, 107, 149, 0.4);
-}
-
-.switchIcon {
-  position: absolute;
-  top: 2px;
-  width: 28px;
-  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0.4;
-  transition: opacity 0.3s ease;
+  gap: 8px;
 }
 
-.switchIconLeft {
-  left: 2px;
+.heroTabBtn:hover {
+  background: rgba(255, 77, 109, 0.05);
+  color: var(--foreground);
 }
 
-.switchIconRight {
-  right: 2px;
-}
-
-.switchIconActive {
-  opacity: 1;
+.heroTabBtnActive {
+  background: rgba(26, 15, 20, 0.7);
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
 }
 
 /* Main Layout Grid */
@@ -1508,6 +1467,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0; /* Cần thiết để flex children có thể scroll */
+  overflow: hidden;
 }
 
 .momoChatHeader {
@@ -1536,13 +1497,28 @@
 }
 
 .momoChatFeed {
-  flex-grow: 1;
+  flex: 1 1 0;
+  min-height: 0; /* Cho phép scroll trong flex container */
   padding: 16px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
   background-color: #fafbfc;
+}
+
+.momoChatFeed::-webkit-scrollbar {
+  width: 6px;
+}
+.momoChatFeed::-webkit-scrollbar-track {
+  background: transparent;
+}
+.momoChatFeed::-webkit-scrollbar-thumb {
+  background: #d4bfc6;
+  border-radius: 3px;
+}
+.momoChatFeed::-webkit-scrollbar-thumb:hover {
+  background: #b89aa3;
 }
 
 /* Chat speech bubbles */
@@ -1584,7 +1560,7 @@
 .momoMsgSender {
   font-size: 0.7rem;
   font-weight: 800;
-  color: var(--foreground-muted);
+  color: #8a6e77;
 }
 
 .momoMsgBubbleBox {
@@ -1596,11 +1572,16 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.momoAronaBubble .momoMsgBubbleBox {
+.momoAronaBubble .momoMsgBubbleBox,
+.momoPlanaBubble .momoMsgBubbleBox {
   background: #ffffff;
-  border: 1.5px solid var(--border-color);
-  color: var(--foreground);
+  border: 1.5px solid #e5d6db;
+  color: #2d1f25; /* Màu tối để đọc rõ trên nền trắng */
   border-top-left-radius: 2px;
+}
+
+.momoPlanaBubble .momoMsgBubbleBox {
+  border-color: #d6c3d8; /* Distinct grey-purple border for Plana */
 }
 
 .momoUserBubble .momoMsgBubbleBox {
@@ -1611,7 +1592,7 @@
 
 .momoMsgTime {
   font-size: 0.62rem;
-  color: var(--foreground-muted);
+  color: #8a6e77;
   align-self: flex-end;
   margin-bottom: 2px;
   flex-shrink: 0;
@@ -1619,8 +1600,8 @@
 
 /* Form in MomoTalk input field area */
 .momoInputArea {
-  border-top: 1.5px solid var(--border-color);
-  background: var(--background-alt);
+  border-top: 1.5px solid #e5d6db;
+  background: #f6eff2;
   padding: 12px;
 }
 
@@ -1645,9 +1626,10 @@
 .momoInputMini {
   padding: 8px 12px;
   font-size: 0.78rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #e5d6db;
   border-radius: var(--border-radius-sm);
-  background: var(--background);
+  background: #ffffff;
+  color: #2d1f25;
   font-family: var(--font-body);
 }
 
@@ -1666,9 +1648,10 @@
   flex-grow: 1;
   padding: 8px 12px;
   font-size: 0.8rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #e5d6db;
   border-radius: var(--border-radius-sm);
-  background: var(--background);
+  background: #ffffff;
+  color: #2d1f25;
   font-family: var(--font-body);
   resize: none;
   height: 36px;
@@ -1678,6 +1661,10 @@
 .momoComposeField:focus {
   outline: none;
   border-color: var(--accent);
+}
+
+.momoComposeField::placeholder {
+  color: #a8929a;
 }
 
 .momoSendBtn {
@@ -1696,13 +1683,168 @@
 }
 
 .momoSendBtn:hover {
-  background: #0096e6;
+  background: #e8435e;
 }
 
 .momoSendBtn:disabled {
-  background: rgba(0,0,0,0.1);
-  color: rgba(0,0,0,0.3);
+  background: #ebdce2;
+  color: #bfaab1;
   cursor: not-allowed;
+}
+/* ========== EXPANDED MOMOTALK OVERLAY ========== */
+.momoBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9990;
+  animation: fadeIn 0.2s ease;
+}
+
+.momoExpanded {
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 900px;
+  height: 85vh;
+  z-index: 9991;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: expandIn 0.25s ease-out;
+}
+
+@keyframes expandIn {
+  from { transform: translate(-50%, -50%) scale(0.92); opacity: 0; }
+  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.momoExpanded .momoChatFeed {
+  font-size: 0.92rem;
+}
+
+.momoExpanded .momoMsgBubble {
+  max-width: 70%;
+}
+
+/* ========== CHAT HEADER ACTIONS ========== */
+.momoChatHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.momoExpandBtn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--foreground-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.momoExpandBtn:hover {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ========== RESPONSE MODE TOGGLE ========== */
+.momoModeRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.momoModeLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #8a6e77;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.momoModeBtn {
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 1px solid #dcd1d5;
+  border-radius: 12px;
+  background: transparent;
+  color: #8a6e77;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.momoModeBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 77, 109, 0.05);
+}
+
+.momoModeBtnActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.momoModeBtnActive:hover {
+  background: #e8435e;
+  border-color: #e8435e;
+  color: #ffffff;
+}
+
+/* ========== CHAT MARKDOWN STYLES (nền sáng trong bubble) ========== */
+.chatMarkdown {
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.chatMdPara {
+  margin: 0 0 6px 0;
+}
+
+.chatMdPara:last-child {
+  margin-bottom: 0;
+}
+
+.chatMdList {
+  margin: 4px 0 6px 0;
+  padding-left: 18px;
+}
+
+.chatMdList:last-child {
+  margin-bottom: 0;
+}
+
+.chatMdList li {
+  margin-bottom: 3px;
+  line-height: 1.5;
+}
+
+.chatMarkdown strong {
+  font-weight: 700;
+  color: #1a1015;
+}
+
+.chatMarkdown em {
+  font-style: italic;
+  color: #4a3540;
 }
 
 /* Footer */
@@ -1718,4 +1860,47 @@
 @keyframes slideDown {
   from { transform: translateY(-10px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* ========== SUGGESTION CHIPS (NotebookLM style) ========== */
+.momoSuggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px dashed #e5d6db;
+  border-radius: var(--border-radius-sm);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.01);
+  margin-bottom: 4px;
+}
+
+.momoSuggestionChip {
+  background: #fbf8f9;
+  border: 1px solid #e2d2d7;
+  border-radius: 16px;
+  padding: 6px 14px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #5d424b;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-body);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.momoSuggestionChip:hover {
+  background: rgba(255, 77, 109, 0.08);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(255, 77, 109, 0.1);
+}
+
+.momoSuggestionChip:active {
+  transform: translateY(0);
 }
