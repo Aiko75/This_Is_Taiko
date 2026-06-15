@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -31,11 +32,28 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+  }>) {
   return (
     <html lang="vi" className={`${inter.variable} ${outfit.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Script src="https://identity.netlify.com/v1/netlify-identity-widget.js" strategy="afterInteractive" />
+        <Script id="netlify-identity-redirect" strategy="afterInteractive">
+          {`
+            if (window.netlifyIdentity) {
+              window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                  window.netlifyIdentity.on("login", () => {
+                    document.location.href = "/admin/";
+                  });
+                }
+              });
+            }
+          `}
+        </Script>
+      </body>
     </html>
   );
 }
+
 
