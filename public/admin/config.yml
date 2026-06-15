@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: Aiko75/This_Is_Taiko
+  name: git-gateway
   branch: main
 
 # Hỗ trợ chạy test CMS offline qua proxy local
