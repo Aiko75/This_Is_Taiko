@@ -1,3 +1,5 @@
-[build]
-  command = "npm run build"
-  publish = ".next"
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 301
+  force = true
