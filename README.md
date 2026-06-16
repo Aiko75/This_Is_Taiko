@@ -79,13 +79,3 @@ Sau đó truy cập [http://localhost:3000/admin/](http://localhost:3000/admin/)
 ```bash
 npm run build
 ```
-
----
-
-## 📂 Cấu Trúc Thư Mục Quan Trọng
-
-*   [`src/app/api/chat/route.ts`](file:///d:/My_projects/This_Is_Taiko/src/app/api/chat/route.ts): API Route trung gian xử lý chat RAG, định hình prompt cho Arona và Plana.
-*   [`src/app/components/MomoTalk.tsx`](file:///d:/My_projects/This_Is_Taiko/src/app/components/MomoTalk.tsx): Giao diện MomoTalk chat song song, quản lý gợi ý câu hỏi.
-*   [`src/app/components/Icons.tsx`](file:///d:/My_projects/This_Is_Taiko/src/app/components/Icons.tsx): Chứa mã nguồn vẽ Vector SVG cho Arona, Plana và Sensei.
-*   [`src/app/config/`](file:///d:/My_projects/This_Is_Taiko/src/app/config/): Thư mục lưu dữ liệu JSON lý lịch (`profile.json`) và dự án (`projects.json`).
-*   [`public/admin/`](file:///d:/My_projects/This_Is_Taiko/public/admin/): Trang tĩnh cấu hình và hiển thị Decap CMS.
