@@ -41,8 +41,13 @@ export default function MomoTalk({
   onSetPartner
 }: MomoTalkProps) {
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
