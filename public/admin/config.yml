@@ -75,6 +75,49 @@ collections:
               - { label: "Thời gian thực hiện", name: "period", widget: "string" }
               - { label: "Đơn vị/Tổ chức", name: "sub", widget: "string" }
               - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
+          
+          - label: "Học vấn (Education)"
+            name: "education"
+            widget: "list"
+            fields:
+              - { label: "Trường học", name: "school", widget: "string" }
+              - { label: "Bằng cấp / Chuyên ngành", name: "degree", widget: "string" }
+              - { label: "Niên khóa (Thời gian)", name: "period", widget: "string" }
+              - { label: "GPA (Điểm số)", name: "gpa", widget: "string", required: false }
+              - { label: "Chi tiết hoạt động", name: "details", widget: "text", required: false }
+
+          - label: "Chứng chỉ & Bằng cấp (Certificates)"
+            name: "certificates"
+            widget: "list"
+            fields:
+              - { label: "Tên chứng chỉ / Giải thưởng", name: "title", widget: "string" }
+              - { label: "Tổ chức cấp", name: "issuer", widget: "string" }
+              - { label: "Năm cấp", name: "date", widget: "string" }
+              - { label: "Hình ảnh chứng chỉ", name: "image", widget: "image", required: false }
+
+          - label: "Các khối nội dung tùy chỉnh (Custom Blocks)"
+            name: "customBlocks"
+            widget: "list"
+            types:
+              - label: "Khối Văn bản (Rich Text Block)"
+                name: "textBlock"
+                widget: "object"
+                fields:
+                  - { label: "Tiêu đề khối", name: "title", widget: "string", required: false }
+                  - { label: "Nội dung", name: "content", widget: "markdown" }
+              - label: "Khối Ảnh nổi bật (Image Block)"
+                name: "imageBlock"
+                widget: "object"
+                fields:
+                  - { label: "Tiêu đề khối", name: "title", widget: "string", required: false }
+                  - { label: "Hình ảnh", name: "image", widget: "image" }
+                  - { label: "Chú thích", name: "caption", widget: "string", required: false }
+              - label: "Khối Trích dẫn (Quote Block)"
+                name: "quoteBlock"
+                widget: "object"
+                fields:
+                  - { label: "Câu trích dẫn", name: "quote", widget: "text" }
+                  - { label: "Tác giả / Nguồn", name: "author", widget: "string", required: false }
 
       - name: "projects_collection"
         label: "Danh sách dự án"
@@ -91,7 +134,7 @@ collections:
               - { label: "Mô tả ngắn", name: "desc", widget: "text" }
               - { label: "Tags", name: "tags", widget: "list", field: { name: "tag", widget: "string" } }
               - { label: "Đánh giá độ sao (1-3)", name: "stars", widget: "number", value_type: "int" }
-              - label: "Vật phẩm rơi (Drops icon & name)"
+              - { label: "Vật phẩm rơi (Drops icon & name)"
                 name: "drops"
                 widget: "list"
                 fields:

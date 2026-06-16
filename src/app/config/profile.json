@@ -57,5 +57,35 @@
       "sub": "Hệ Cơ sở dữ liệu Anime tự động",
       "desc": "Viết các công cụ crawler thu thập lượng lớn dữ liệu Anime/Manga từ các fandom wiki lớn. Thiết kế hệ thống làm sạch và chuẩn hóa dữ liệu quan hệ cục bộ phục vụ các minigame cá nhân."
     }
+  ],
+  "education": [
+    {
+      "school": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
+      "degree": "Cử nhân Công nghệ thông tin",
+      "period": "2023 - 2027",
+      "gpa": "3.8/4.0",
+      "details": "Chuyên ngành Khoa học Máy tính & AI. Thành viên tiêu biểu CLB Nghiên cứu khoa học sinh viên."
+    }
+  ],
+  "certificates": [
+    {
+      "title": "Gemini Developer Certification",
+      "issuer": "Google Cloud",
+      "date": "2026",
+      "image": "/images/myself.jpg"
+    },
+    {
+      "title": "Machine Learning Specialization",
+      "issuer": "Coursera / Stanford",
+      "date": "2025",
+      "image": ""
+    }
+  ],
+  "customBlocks": [
+    {
+      "type": "textBlock",
+      "title": "Lời chào từ Trần Nhân",
+      "content": "Chào mừng Sensei đến với không gian cá nhân của tôi. Nơi tôi chia sẻ về lập trình web và các nghiên cứu xử lý ngôn ngữ tự nhiên (NLP) song song với hệ thống tìm kiếm ngữ cảnh thông minh (RAG)."
+    }
   ]
 }

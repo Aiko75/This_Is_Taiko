@@ -30,6 +30,9 @@ Kỹ năng & Dự án trọng tâm:
 - Biên dịch ngôn ngữ: ${profileData.highlights.translation.title} - ${profileData.highlights.translation.desc}
 - Tự học & Ngoại ngữ: ${profileData.highlights.japanese.title} - ${profileData.highlights.japanese.desc}
 - Thu thập & Xử lý dữ liệu: ${profileData.highlights.crawler.title} - ${profileData.highlights.crawler.desc}
+Học vấn (Education): ${JSON.stringify((profileData as any).education || [])}
+Chứng chỉ & Giải thưởng (Certificates): ${JSON.stringify((profileData as any).certificates || [])}
+Khối nội dung tùy chỉnh thêm trên trang (Custom Blocks): ${JSON.stringify((profileData as any).customBlocks || [])}
 Bản đồ công nghệ (Tech Stack): ${JSON.stringify(profileData.techStack)}
 Timeline hoạt động và lịch sử: ${JSON.stringify(profileData.timeline)}
 Danh sách dự án đã và đang thực hiện: ${JSON.stringify(projectsData)}
