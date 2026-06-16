@@ -1,0 +1,7 @@
+{
+  "title": "Hành trình nghiên cứu NLP và xây dựng RAG tại NEU",
+  "date": "2026-06-16T14:40:00.000Z",
+  "image": "/images/myself.jpg",
+  "summary": "Chia sẻ về quá trình phát triển hệ thống tìm kiếm ngữ cảnh thông minh hỗ trợ phân loại dữ liệu khoa học tại Đại học Kinh tế Quốc dân.",
+  "body": "Chào mọi người! Trong bài viết này, tôi muốn chia sẻ một vài kinh nghiệm thực tế khi xây dựng hệ thống Retrieval-Augmented Generation (RAG) và các mô hình xử lý ngôn ngữ tự nhiên (NLP) phục vụ việc phân loại dữ liệu khoa học tại Trường Công nghệ - NEU. \n\nHệ thống giúp tối ưu hóa thời gian tìm kiếm thông tin bằng cách chuyển đổi văn bản sang định dạng Vector Embeddings và lưu trữ trong cơ sở dữ liệu Vector chuyên dụng, từ đó truy xuất ngữ cảnh chính xác cao nhất để cung cấp cho mô hình LLM. Rất mong nhận được phản hồi và trao đổi học thuật từ các bạn!"
+}

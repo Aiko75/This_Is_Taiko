@@ -2,11 +2,11 @@ import { DialogNode } from "../types";
 
 export const DIALOG_TREE: Record<string, DialogNode> = {
   start: {
-    text: "Xin chào Sensei! Hôm nay Arona có thể giúp gì cho Sensei ạ? Em đang truy cập vào cơ sở dữ liệu dự án của Trần Nhân đây!",
+    text: "Xin chào Sensei! Hôm nay Arona có thể giúp gì cho Sensei ạ? Em đang truy cập vào cơ sở dữ liệu của Trần Nhân đây!",
     options: [
       { label: "Báo cáo nghiên cứu khoa học tại NEU?", nextNode: "research" },
       { label: "Dự án sinh thái game Aniko là gì?", nextNode: "aniko" },
-      { label: "Hỏi về sở thích Light Novel của Sensei?", nextNode: "hobby" },
+      { label: "Hỏi về sở thích Light Novel của Trần Nhân?", nextNode: "hobby" },
     ],
   },
   research: {
@@ -26,7 +26,7 @@ export const DIALOG_TREE: Record<string, DialogNode> = {
     ],
   },
   hobby: {
-    text: "Ngoài việc code ra, Sensei Nhân là một otaku chính hiệu! Cậu ấy rất chăm chỉ dịch Light Novel từ tiếng Anh sang tiếng Việt lúc rảnh rỗi, là một Sensei tận tụy trong Blue Archive (Schale) và đang tự học tiếng Nhật để đọc LN gốc nữa!",
+    text: "Ngoài việc code ra, Trần Nhân là một otaku chính hiệu! Cậu ấy rất chăm chỉ dịch Light Novel từ tiếng Anh sang tiếng Việt lúc rảnh rỗi và đang tự học tiếng Nhật để đọc LN gốc nữa!",
     options: [
       { label: "Thú vị đấy! Cậu ấy học công nghệ gì mới?", nextNode: "learning" },
       { label: "Trở lại menu chính nhé.", nextNode: "start" },

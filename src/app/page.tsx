@@ -10,6 +10,7 @@ import { DIALOG_TREE } from "./config/dialog";
 // Các component dùng chung
 import AronaHalo from "./components/AronaHalo";
 import SkillPopup from "./components/SkillPopup";
+import BlogPopup from "./components/BlogPopup";
 import CampaignStage from "./components/CampaignStage";
 import MomoTalk, { type ResponseMode } from "./components/MomoTalk";
 import ProfHUD from "./components/ProfHUD";
@@ -27,7 +28,11 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Trạng thái hiển thị popup chi tiết kỹ năng
-  const [activeSkill, setActiveSkill] = useState<"ex" | "normal" | "passive" | "sub" | null>(null);
+  const [activeSkill, setActiveSkill] = useState<"web" | "translation" | "japanese" | "crawler" | null>(null);
+
+  // Trạng thái hiển thị bài viết nhật ký
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [selectedBlogPost, setSelectedBlogPost] = useState<any | null>(null);
 
   // Trạng thái hội thoại MomoTalk
   const [activePartner, setActivePartner] = useState<"arona" | "plana">("arona");
@@ -66,6 +71,22 @@ export default function Home() {
   const [isAronaTyping, setIsAronaTyping] = useState(false);
   const [isMomoExpanded, setIsMomoExpanded] = useState(false);
   const [responseMode, setResponseMode] = useState<ResponseMode>("concise");
+
+  // Load blog posts từ API
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const response = await fetch("/api/blog");
+        if (response.ok) {
+          const data = await response.json();
+          setBlogPosts(data);
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải nhật ký:", error);
+      }
+    };
+    fetchBlog();
+  }, []);
 
   // Hàm toggle phóng to/thu nhỏ chat + tự động chuyển chế độ trả lời
   const handleToggleMomoExpand = () => {
@@ -319,6 +340,9 @@ export default function Home() {
                 <a href="#projects" className={styles.navLink}>Dự Án</a>
               </li>
               <li>
+                <a href="#blog" className={styles.navLink}>Nhật Ký</a>
+              </li>
+              <li>
                 <a href="#skills" className={styles.navLink}>Kỹ Năng</a>
               </li>
               <li>
@@ -349,6 +373,9 @@ export default function Home() {
             <a href="#projects" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>Dự Án</a>
           </li>
           <li>
+            <a href="#blog" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>Nhật Ký</a>
+          </li>
+          <li>
             <a href="#skills" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>Kỹ Năng</a>
           </li>
           <li>
@@ -364,7 +391,7 @@ export default function Home() {
         <section className={styles.heroSection}>
           <div className={styles.heroContent}>
             <div className={styles.tagline}>
-              <span className={styles.logoDot} /> {profileData.affiliation} {"// Sensei Level"} {profileData.level}
+              <span className={styles.logoDot} /> {profileData.affiliation} {"// Kinh nghiệm: "} {profileData.experience}
             </div>
             <h1 className={styles.heroTitle}>
               Chào mừng, tôi là <br />
@@ -455,55 +482,92 @@ export default function Home() {
               <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
               <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
 
-              <div className={styles.statCardHeader}>
-                <span className={styles.statCardTitle}>Thông Tin Học Viên (Sensei)</span>
-                <span className={styles.statLevel}>LV {profileData.level}</span>
+              {/* Header Hồ sơ với Avatar */}
+              <div className={styles.statCardHeader} style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
+                {profileData.avatar ? (
+                  <img 
+                    src={profileData.avatar} 
+                    alt={profileData.name} 
+                    style={{ 
+                      width: "60px", 
+                      height: "60px", 
+                      borderRadius: "50%", 
+                      objectFit: "cover", 
+                      border: "2px solid var(--accent)",
+                      boxShadow: "0 0 10px rgba(255, 77, 109, 0.3)"
+                    }} 
+                  />
+                ) : (
+                  <div style={{ 
+                    width: "60px", 
+                    height: "60px", 
+                    borderRadius: "50%", 
+                    background: "rgba(255, 77, 109, 0.1)", 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    fontSize: "1.5rem",
+                    border: "2px dashed var(--accent)"
+                  }}>
+                    💻
+                  </div>
+                )}
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span className={styles.statCardTitle} style={{ fontSize: "1.25rem", color: "var(--foreground)" }}>
+                    Thông Tin Chuyên Môn
+                  </span>
+                  <span className={styles.statLevel} style={{ fontSize: "0.85rem", color: "var(--accent)", alignSelf: "flex-start", marginTop: "2px" }}>
+                    {profileData.experience} Kinh nghiệm
+                  </span>
+                </div>
               </div>
 
               <div className={styles.baStatsGrid}>
                 <div className={styles.baStatBox}>
-                  <span className={styles.baStatLabel}>Vị Trí</span>
-                  <span className={styles.baStatVal}>{profileData.position}</span>
+                  <span className={styles.baStatLabel}>Định Hướng</span>
+                  <span className={styles.baStatVal} style={{ fontSize: "0.85rem", fontWeight: 700 }}>{profileData.target}</span>
                 </div>
                 <div className={styles.baStatBox}>
-                  <span className={styles.baStatLabel}>Vai Trò</span>
-                  <span className={styles.baStatVal}>{profileData.role}</span>
+                  <span className={styles.baStatLabel}>Chuyên Môn</span>
+                  <span className={styles.baStatVal} style={{ fontSize: "0.85rem", fontWeight: 700 }}>{profileData.specialization}</span>
                 </div>
                 <div className={styles.baStatBox}>
-                  <span className={styles.baStatLabel}>Trường</span>
-                  <span className={styles.baStatVal}>{profileData.affiliation}</span>
+                  <span className={styles.baStatLabel}>Đơn Vị</span>
+                  <span className={styles.baStatVal} style={{ fontSize: "0.85rem", fontWeight: 700 }}>{profileData.affiliation}</span>
                 </div>
               </div>
 
-              <div className={styles.baTerrainRow}>
-                {profileData.terrainRanks.map((t, idx) => (
+              <div className={styles.baTerrainRow} style={{ marginTop: "12px", marginBottom: "16px" }}>
+                {profileData.tools.map((t, idx) => (
                   <div key={idx} className={styles.baTerrainBox}>
                     <span>{t.name}</span>
-                    <span className={styles.baTerrainRank}>{t.rank}</span>
+                    <span className={styles.baTerrainRank} style={{ fontSize: "0.75rem", padding: "2px 6px", textTransform: "none" }}>
+                      {t.level}
+                    </span>
                   </div>
                 ))}
               </div>
 
               <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--foreground-muted)", textTransform: "uppercase", marginBottom: "8px" }}>
-                Bảng kỹ năng cá nhân (Click xem chi tiết):
+                Dự án & Kỹ năng trọng tâm (Click xem):
               </div>
 
               <div className={styles.baSkillsGrid}>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("ex")}>
-                  <div className={styles.baSkillIcon}>EX</div>
-                  <span className={styles.baSkillName}>{profileData.skills.ex.name}</span>
+                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("web")}>
+                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>WEB</div>
+                  <span className={styles.baSkillName}>{profileData.highlights.web.title}</span>
                 </button>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("normal")}>
-                  <div className={styles.baSkillIcon}>NM</div>
-                  <span className={styles.baSkillName}>{profileData.skills.normal.name}</span>
+                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("translation")}>
+                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>LN</div>
+                  <span className={styles.baSkillName}>{profileData.highlights.translation.title}</span>
                 </button>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("passive")}>
-                  <div className={styles.baSkillIcon}>PS</div>
-                  <span className={styles.baSkillName}>{profileData.skills.passive.name}</span>
+                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("japanese")}>
+                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>JPN</div>
+                  <span className={styles.baSkillName}>{profileData.highlights.japanese.title}</span>
                 </button>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("sub")}>
-                  <div className={styles.baSkillIcon}>SB</div>
-                  <span className={styles.baSkillName}>{profileData.skills.sub.name}</span>
+                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("crawler")}>
+                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>DB</div>
+                  <span className={styles.baSkillName}>{profileData.highlights.crawler.title}</span>
                 </button>
               </div>
             </div>
@@ -513,7 +577,7 @@ export default function Home() {
         {/* POPUP CHI TIẾT KỸ NĂNG */}
         {activeSkill && (
           <SkillPopup
-            skillDetails={profileData.skills[activeSkill]}
+            skillDetails={profileData.highlights[activeSkill]}
             onClose={() => setActiveSkill(null)}
           />
         )}
@@ -542,12 +606,108 @@ export default function Home() {
           </div>
         </section>
 
+        {/* PHẦN NHẬT KÝ & HOẠT ĐỘNG */}
+        <section id="blog" className={styles.section}>
+          <div className={styles.sectionTitleContainer}>
+            <span className={styles.sectionPre}>03 // CHRONICLES & UPDATES</span>
+            <h2 className={styles.sectionTitle}>Nhật Ký & Hoạt Động</h2>
+          </div>
+
+          {blogPosts.length === 0 ? (
+            <div className="glass-panel" style={{ padding: "30px", textAlign: "center", color: "var(--foreground-muted)" }}>
+              <span>Đang tải danh sách bài viết hoặc chưa có bài viết nào...</span>
+            </div>
+          ) : (
+            <div className={styles.projectsGrid}>
+              {blogPosts.map((post, idx) => {
+                const postDate = new Date(post.date).toLocaleDateString("vi-VN", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                });
+                return (
+                  <div 
+                    key={idx} 
+                    className={`${styles.projectCard} glass-panel`} 
+                    style={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}
+                  >
+                    <div className={styles.plusDecal + " " + styles.decalTL}>+</div>
+                    <div className={styles.plusDecal + " " + styles.decalTR}>+</div>
+                    <div className={styles.plusDecal + " " + styles.decalBL}>+</div>
+                    <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
+                    
+                    <div>
+                      {post.image && (
+                        <div style={{ 
+                          width: "100%", 
+                          height: "150px", 
+                          overflow: "hidden", 
+                          borderRadius: "6px", 
+                          marginBottom: "12px", 
+                          border: "1px solid rgba(255, 77, 109, 0.15)" 
+                        }}>
+                          <img 
+                            src={post.image} 
+                            alt={post.title} 
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                          />
+                        </div>
+                      )}
+                      <div style={{ fontSize: "0.75rem", color: "var(--accent)", fontWeight: 800, marginBottom: "6px" }}>
+                        📅 {postDate}
+                      </div>
+                      <h3 
+                        className={styles.projectTitle} 
+                        style={{ fontSize: "1.05rem", marginBottom: "8px", lineBreak: "anywhere" }}
+                      >
+                        {post.title}
+                      </h3>
+                      <p 
+                        className={styles.projectDesc} 
+                        style={{ 
+                          fontSize: "0.85rem", 
+                          opacity: 0.85, 
+                          marginBottom: "16px", 
+                          lineClamp: 3, 
+                          display: "-webkit-box", 
+                          WebkitLineClamp: 3, 
+                          WebkitBoxOrient: "vertical", 
+                          overflow: "hidden" 
+                        }}
+                      >
+                        {post.summary}
+                      </p>
+                    </div>
+
+                    <button 
+                      className={styles.projectBtn} 
+                      onClick={() => setSelectedBlogPost(post)}
+                      style={{ marginTop: "auto", width: "100%", textAlign: "center", display: "block" }}
+                    >
+                      <span>XEM CHI TIẾT BÀI ĐĂNG</span>
+                      <span className={styles.projectBtnIcon}>&gt;</span>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+
+        {/* POPUP CHI TIẾT BÀI ĐĂNG */}
+        {selectedBlogPost && (
+          <BlogPopup 
+            post={selectedBlogPost}
+            onClose={() => setSelectedBlogPost(null)}
+          />
+        )}
+
         {/* BẢN ĐỒ CÔNG NGHỆ & LỊCH SỬ */}
         <section id="skills" className={styles.section}>
           <div className={styles.skillsSectionGrid}>
             <div>
               <div className={styles.sectionTitleContainer}>
-                <span className={styles.sectionPre}>03 // KNOWLEDGE & TECH STACK</span>
+                <span className={styles.sectionPre}>04 // KNOWLEDGE & TECH STACK</span>
                 <h2 className={styles.sectionTitle}>Bản Đồ Công Nghệ</h2>
               </div>
               <div className={styles.skillsColumn}>
@@ -566,7 +726,7 @@ export default function Home() {
 
             <div>
               <div className={styles.sectionTitleContainer}>
-                <span className={styles.sectionPre}>04 // NEU RESEARCH CHRONICLE</span>
+                <span className={styles.sectionPre}>05 // NEU RESEARCH CHRONICLE</span>
                 <h2 className={styles.sectionTitle}>Hoạt Động & Lịch Sử</h2>
               </div>
               <div className={styles.timeline}>
@@ -593,7 +753,7 @@ export default function Home() {
         {/* PHẦN LIÊN HỆ */}
         <section id="contact" className={styles.section}>
           <div className={styles.sectionTitleContainer}>
-            <span className={styles.sectionPre}>05 // COMMUNICATIONS</span>
+            <span className={styles.sectionPre}>06 // COMMUNICATIONS</span>
             <h2 className={styles.sectionTitle}>Kênh Kết Nối MomoTalk & Email</h2>
           </div>
 

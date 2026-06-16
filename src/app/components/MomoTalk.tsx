@@ -9,7 +9,7 @@ export type ResponseMode = "concise" | "detailed";
 const SUGGESTED_QUESTIONS = [
   "Trần Nhân đang nghiên cứu và công tác ở đâu?",
   "Hãy giới thiệu các dự án nổi bật của Trần Nhân",
-  "Kỹ năng EX (EX Skill) của Trần Nhân là gì?",
+  "Các kỹ năng và dự án trọng tâm của Trần Nhân là gì?",
   "Làm thế nào để liên hệ với Trần Nhân?"
 ];
 

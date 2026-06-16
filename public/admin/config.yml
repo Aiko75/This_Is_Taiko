@@ -22,44 +22,45 @@ collections:
           - { label: "Họ và Tên", name: "name", widget: "string" }
           - { label: "Chức danh giới thiệu", name: "title", widget: "string" }
           - { label: "Tiểu sử ngắn", name: "bio", widget: "text" }
-          - { label: "Sensei Level", name: "level", widget: "number", value_type: "int" }
-          - { label: "Vị trí", name: "position", widget: "string" }
-          - { label: "Vai trò", name: "role", widget: "string" }
-          - { label: "Trường học / Văn phòng", name: "affiliation", widget: "string" }
-          - label: "Địa hình hoạt động (Terrain Ranks)"
-            name: "terrainRanks"
+          - { label: "Ảnh đại diện (Avatar)", name: "avatar", widget: "image", required: false }
+          - { label: "Số năm kinh nghiệm", name: "experience", widget: "string" }
+          - { label: "Chuyên môn chính", name: "specialization", widget: "string" }
+          - { label: "Định hướng / Mục tiêu", name: "target", widget: "string" }
+          - { label: "Đơn vị công tác", name: "affiliation", widget: "string" }
+          - label: "Công cụ & Môi trường làm việc"
+            name: "tools"
             widget: "list"
             fields:
-              - { label: "Môi trường (Ví dụ: VS Code (Urban))", name: "name", widget: "string" }
-              - { label: "Xếp hạng (S/A/B)", name: "rank", widget: "string" }
-          - label: "Kỹ năng đặc biệt (Sensei Skills)"
-            name: "skills"
+              - { label: "Tên công cụ (Ví dụ: VS Code)", name: "name", widget: "string" }
+              - { label: "Mức độ sử dụng (Ví dụ: Thành thạo / Tốt)", name: "level", widget: "string" }
+          - label: "Kỹ năng & Dự án trọng tâm"
+            name: "highlights"
             widget: "object"
             fields:
-              - label: "Kỹ năng EX (Aniko Game)"
-                name: "ex"
+              - label: "Dự án phát triển Web"
+                name: "web"
                 widget: "object"
                 fields:
-                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
-                  - { label: "Mô tả", name: "desc", widget: "text" }
-              - label: "Kỹ năng Thường (Normal)"
-                name: "normal"
+                  - { label: "Tiêu đề", name: "title", widget: "string" }
+                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
+              - label: "Biên dịch ngôn ngữ"
+                name: "translation"
                 widget: "object"
                 fields:
-                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
-                  - { label: "Mô tả", name: "desc", widget: "text" }
-              - label: "Kỹ năng Bị động (Passive)"
-                name: "passive"
+                  - { label: "Tiêu đề", name: "title", widget: "string" }
+                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
+              - label: "Tự học & Ngoại ngữ"
+                name: "japanese"
                 widget: "object"
                 fields:
-                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
-                  - { label: "Mô tả", name: "desc", widget: "text" }
-              - label: "Kỹ năng Hỗ trợ (Sub)"
-                name: "sub"
+                  - { label: "Tiêu đề", name: "title", widget: "string" }
+                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
+              - label: "Thu thập & Xử lý dữ liệu"
+                name: "crawler"
                 widget: "object"
                 fields:
-                  - { label: "Tên kỹ năng", name: "name", widget: "string" }
-                  - { label: "Mô tả", name: "desc", widget: "text" }
+                  - { label: "Tiêu đề", name: "title", widget: "string" }
+                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
           - label: "Bản đồ Công nghệ (Tech Stack)"
             name: "techStack"
             widget: "list"
@@ -99,3 +100,17 @@ collections:
               - { label: "Nhãn hành động (VD: START TASK)", name: "actionLabel", widget: "string" }
               - { label: "Đường dẫn liên kết (URL)", name: "url", widget: "string", required: false }
               - { label: "Kích hoạt", name: "isActive", widget: "boolean" }
+
+  - name: "blog"
+    label: "Bài viết & Nhật ký"
+    folder: "src/app/content/blog"
+    create: true
+    format: "json"
+    extension: "json"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Tiêu đề bài viết", name: "title", widget: "string" }
+      - { label: "Ngày đăng", name: "date", widget: "datetime" }
+      - { label: "Ảnh đại diện / Minh họa", name: "image", widget: "image", required: false }
+      - { label: "Tóm tắt ngắn gọn", name: "summary", widget: "text" }
+      - { label: "Nội dung bài viết", name: "body", widget: "markdown" }

@@ -19,13 +19,17 @@ export async function POST(req: Request) {
 Họ tên: ${profileData.name}
 Chức danh giới thiệu: ${profileData.title}
 Tiểu sử: ${profileData.bio}
-Nơi công tác & Vai trò: ${profileData.affiliation} (Vị trí: ${profileData.position}, Vai trò: ${profileData.role}, Level: ${profileData.level})
-Địa hình hoạt động (Terrain Ranks): ${JSON.stringify(profileData.terrainRanks)}
-Kỹ năng đặc biệt (Sensei Skills):
-- Kỹ năng EX: ${profileData.skills.ex.name} - ${profileData.skills.ex.desc} - Lên cấp nâng cao: ${profileData.skills.ex.upgrade}
-- Kỹ năng Thường: ${profileData.skills.normal.name} - ${profileData.skills.normal.desc} - Lên cấp nâng cao: ${profileData.skills.normal.upgrade}
-- Kỹ năng Bị động: ${profileData.skills.passive.name} - ${profileData.skills.passive.desc} - Lên cấp nâng cao: ${profileData.skills.passive.upgrade}
-- Kỹ năng Hỗ trợ: ${profileData.skills.sub.name} - ${profileData.skills.sub.desc} - Lên cấp nâng cao: ${profileData.skills.sub.upgrade}
+Ảnh đại diện: ${profileData.avatar || "Không có"}
+Đơn vị công tác: ${profileData.affiliation}
+Kinh nghiệm: ${profileData.experience}
+Chuyên môn chính: ${profileData.specialization}
+Định hướng / Mục tiêu: ${profileData.target}
+Công cụ & Môi trường làm việc: ${JSON.stringify(profileData.tools)}
+Kỹ năng & Dự án trọng tâm:
+- Dự án phát triển Web: ${profileData.highlights.web.title} - ${profileData.highlights.web.desc}
+- Biên dịch ngôn ngữ: ${profileData.highlights.translation.title} - ${profileData.highlights.translation.desc}
+- Tự học & Ngoại ngữ: ${profileData.highlights.japanese.title} - ${profileData.highlights.japanese.desc}
+- Thu thập & Xử lý dữ liệu: ${profileData.highlights.crawler.title} - ${profileData.highlights.crawler.desc}
 Bản đồ công nghệ (Tech Stack): ${JSON.stringify(profileData.techStack)}
 Timeline hoạt động và lịch sử: ${JSON.stringify(profileData.timeline)}
 Danh sách dự án đã và đang thực hiện: ${JSON.stringify(projectsData)}
