@@ -466,14 +466,14 @@ export default function Home() {
         {/* PHẦN GIỚI THIỆU BẢN THÂN */}
         <section id="about" className={styles.section}>
           <div className={styles.sectionTitleContainer}>
-            <span className={styles.sectionPre}>01 // PERSONAL PROFILE</span>
-            <h2 className={styles.sectionTitle}>Hồ Sơ Cá Nhân & Tiểu Sử</h2>
+            <span className={styles.sectionPre}>{(profileData as any).aboutSectionPre || "01 // PERSONAL PROFILE"}</span>
+            <h2 className={styles.sectionTitle}>{(profileData as any).aboutSectionTitle || "Hồ Sơ Cá Nhân & Tiểu Sử"}</h2>
           </div>
 
           <div className={styles.aboutGrid}>
             <div className={styles.bioText}>
               <h3 style={{ fontSize: "1.4rem", color: "var(--accent)", fontWeight: 800 }}>
-                Kỹ sư Phần mềm & Trợ lý Nghiên cứu AI
+                {(profileData as any).aboutTitle || "Kỹ sư Phần mềm & Trợ lý Nghiên cứu AI"}
               </h3>
               <div className={styles.bioParagraph} style={{ marginTop: "16px" }}>
                 <ChatMarkdown text={(profileData as any).aboutLong || ""} />

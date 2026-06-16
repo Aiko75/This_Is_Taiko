@@ -22,6 +22,9 @@ collections:
           - { label: "Họ và Tên", name: "name", widget: "string" }
           - { label: "Chức danh giới thiệu", name: "title", widget: "string" }
           - { label: "Tiểu sử ngắn", name: "bio", widget: "text" }
+          - { label: "Tiêu đề phần Giới thiệu (Vd: Kỹ sư Phần mềm & Trợ lý Nghiên cứu AI)", name: "aboutTitle", widget: "string", required: false }
+          - { label: "Tiêu đề lớn của Section 1 (Vd: Hồ Sơ Cá Nhân & Tiểu Sử)", name: "aboutSectionTitle", widget: "string", required: false }
+          - { label: "Ký hiệu phụ Section 1 (Vd: 01 // PERSONAL PROFILE)", name: "aboutSectionPre", widget: "string", required: false }
           - { label: "Giới thiệu bản thân chi tiết (Hỗ trợ Markdown)", name: "aboutLong", widget: "markdown", required: false }
           - { label: "Ảnh đại diện (Avatar)", name: "avatar", widget: "image", required: false }
           - { label: "Số năm kinh nghiệm", name: "experience", widget: "string" }
