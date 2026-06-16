@@ -1,16 +1,22 @@
 {
   "timeline": [
     {
-      "title": "Trợ lý Nghiên cứu Khoa học & NLP",
-      "period": "Hiện tại",
+      "title": "Nghiên cứu phát triển hệ thống Research NEU",
+      "period": "9/2025 - 3/2026",
       "sub": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
-      "desc": "Phát triển và triển khai hệ thống phân loại bài viết khoa học bằng xử lý ngôn ngữ tự nhiên (NLP). Xây dựng cấu trúc cơ sở dữ liệu Vector để tối ưu khả năng tìm kiếm ngữ cảnh (RAG), hỗ trợ các đề tài nghiên cứu của trường."
+      "desc": "NEU-RESEARCH-AI - Hệ thống RAG (Retrieval-Augmented Generation) AI cho nghiên cứu của Đại học Kinh tế Quốc dân.\n\nStack: Python (FastAPI) + Qdrant + Ollama + Streamlit\n\nKiến trúc 3 service:\nAgent Service (FastAPI, port 8000) - API hỏi đáp (/v1/ask)\nData Processing Service (FastAPI, port 8001) - Semantic search, Qdrant inspector, auth, audit logs\nFrontend (Streamlit, port 8501) - UI demo\n\nChức năng chính:\n🤖 RAG engine (semantic search + LLM generation)\n📊 Pipeline xử lý dữ liệu (5 bước: inbox → raw → staging → processed → embeddings)\n🔐 Xác thực & audit logs\n🗃️ Quản lý vector database (Qdrant)\n📝 Embedding với Ollama"
     },
     {
-      "title": "Crawl & Xây dựng Database Wiki",
-      "period": "2025 - 2026",
-      "sub": "Hệ Cơ sở dữ liệu Anime tự động",
-      "desc": "Viết các công cụ crawler thu thập lượng lớn dữ liệu Anime/Manga từ các fandom wiki lớn. Thiết kế hệ thống làm sạch và chuẩn hóa dữ liệu quan hệ cục bộ phục vụ các minigame cá nhân."
+      "title": "Phát triển hệ thống kho dữ liệu NEU",
+      "period": "9/2025 - 3/2026",
+      "sub": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
+      "desc": "DataD3 - Nền tảng web quản lý, tìm kiếm và trực quan hóa dữ liệu học thuật của Đại học Kinh tế Quốc dân (NEU).\n\nStack: Next.js 15 + React 19 + Tailwind CSS + Ant Design + Recharts\n\nChức năng chính:\n🔍 Tìm kiếm & xem trước dữ liệu\n📊 Trực quan hóa dữ liệu (biểu đồ)\n🔐 Xác thực Microsoft SSO + phân quyền (user/admin)\n📋 Quản lý yêu cầu/chia sẻ dữ liệu theo role\n📦 CSDL: Stock, Điểm chuẩn, CPI, Tuyển sinh, Đề cương"
+    },
+    {
+      "title": "Các Project cá nhân",
+      "period": "2025 - nay",
+      "sub": "Trần Nhân (Aiko)",
+      "desc": "1. Aniko (JavaScript) - Dự án JavaScript\n2. Convert_File (Python) - Công cụ xử lý file\n3. Phira-Beatmap-Generator - Game/Music tool\n4. quiz-pdf-processor (Dart) - Xử lý PDF quiz\n5. This_Is_Taiko (TypeScript) - Portfolio Blog\nLink toàn bộ Repo: https://github.com/Aiko75?tab=repositories"
     }
   ],
   "bio": "IT + Otaku :D\nĐang có định hướng du học Nhật Bản",
@@ -19,12 +25,22 @@
       "school": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
       "degree": "Cử nhân Công nghệ thông tin",
       "period": "2023 - 2027",
-      "gpa": "3.8/4.0",
-      "details": "Chuyên ngành Khoa học Máy tính & AI. Thành viên tiêu biểu CLB Nghiên cứu khoa học sinh viên."
+      "gpa": "3.6+/4.0",
+      "details": "Chuyên ngành Công nghệ thông tin. Thành viên tiêu biểu FIT Lab."
+    },
+    {
+      "school": "IELTS Arena",
+      "degree": "IELTS 7.0+",
+      "period": "3/2026 - 12/2026"
+    },
+    {
+      "school": "Dũng Mori",
+      "degree": "N4 JLPT",
+      "period": "3/2026 - 12/2026"
     }
   ],
   "experience": "2+ năm",
-  "specialization": "Web Dev & AI Research",
+  "specialization": "Software Dev & AI Research",
   "name": "Trần Ngọc Nhân",
   "affiliation": "NEU",
   "target": "Du học Nhật Bản",
@@ -34,31 +50,26 @@
       "items": [
         "HTML5 / CSS3",
         "JavaScript (ES6+)",
-        "TypeScript",
         "React.js",
-        "Next.js",
-        "Responsive Design"
+        "Next.js"
       ]
     },
     {
-      "category": "⚙️ Backend & AI Research",
+      "category": "⚙️ Backend & AI",
       "items": [
         "Node.js / Express",
         "Python",
         "FastAPI",
-        "NLP Algorithms",
-        "Vector Database (Chroma)",
         "RAG Pipelines"
       ]
     },
     {
-      "category": "🎓 Kỹ Năng Hỗ Trợ",
+      "category": "🎓 Các Kỹ Năng Khác",
       "items": [
-        "Git / GitHub",
-        "Web Scraping (BeautifulSoup/Playwright)",
-        "SQLite / PostgreSQL",
-        "English translation",
-        "Japanese Basic (Tự học N4)"
+        "App Dev (Flutter)",
+        "Game Dev (Unity)",
+        "Data Processing",
+        "Ngoại ngữ (IELTS 7.0+ & N4 JLPT)"
       ]
     }
   ],
@@ -73,24 +84,32 @@
   "avatar": "/images/myself.jpg",
   "tools": [
     {
-      "name": "VS Code",
+      "name": "Antigravity",
       "level": "Thành thạo"
     },
     {
-      "name": "Terminal / Git",
-      "level": "Tốt"
+      "name": "Git/Github",
+      "level": "Thành thạo"
     },
     {
-      "name": "Chrome DevTools",
-      "level": "Tốt"
+      "name": "Postgres, MongoDB",
+      "level": "Ổn"
+    },
+    {
+      "name": "Docker",
+      "level": "Ổn"
     }
   ],
   "certificates": [
     {
-      "title": "Gemini Developer Certification",
-      "issuer": "Google Cloud",
-      "date": "2026",
-      "image": "/images/myself.jpg"
+      "title": "Giải Nhất cấp Trường cuộc thi NCKHSV 2025-2026",
+      "issuer": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
+      "date": "10/2026"
+    },
+    {
+      "title": "Giải Ba cấp Trường cuộc thi NCKHSV 2025-2026",
+      "issuer": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
+      "date": "10/2026"
     }
   ],
   "highlights": {
