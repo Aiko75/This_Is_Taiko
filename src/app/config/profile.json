@@ -1,16 +1,97 @@
 {
-  "name": "Trần Ngọc Nhân",
-  "title": "Software Engineer & Scientific Research Assistant @ NEU",
+  "timeline": [
+    {
+      "title": "Trợ lý Nghiên cứu Khoa học & NLP",
+      "period": "Hiện tại",
+      "sub": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
+      "desc": "Phát triển và triển khai hệ thống phân loại bài viết khoa học bằng xử lý ngôn ngữ tự nhiên (NLP). Xây dựng cấu trúc cơ sở dữ liệu Vector để tối ưu khả năng tìm kiếm ngữ cảnh (RAG), hỗ trợ các đề tài nghiên cứu của trường."
+    },
+    {
+      "title": "Crawl & Xây dựng Database Wiki",
+      "period": "2025 - 2026",
+      "sub": "Hệ Cơ sở dữ liệu Anime tự động",
+      "desc": "Viết các công cụ crawler thu thập lượng lớn dữ liệu Anime/Manga từ các fandom wiki lớn. Thiết kế hệ thống làm sạch và chuẩn hóa dữ liệu quan hệ cục bộ phục vụ các minigame cá nhân."
+    }
+  ],
   "bio": "IT + Otaku :D\nĐang có định hướng du học Nhật Bản",
-  "avatar": "/images/myself.jpg",
+  "education": [
+    {
+      "school": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
+      "degree": "Cử nhân Công nghệ thông tin",
+      "period": "2023 - 2027",
+      "gpa": "3.8/4.0",
+      "details": "Chuyên ngành Khoa học Máy tính & AI. Thành viên tiêu biểu CLB Nghiên cứu khoa học sinh viên."
+    }
+  ],
   "experience": "2+ năm",
   "specialization": "Web Dev & AI Research",
-  "target": "Du học Nhật Bản",
+  "name": "Trần Ngọc Nhân",
   "affiliation": "NEU",
+  "target": "Du học Nhật Bản",
+  "techStack": [
+    {
+      "category": "🌐 Lập Trình Frontend",
+      "items": [
+        "HTML5 / CSS3",
+        "JavaScript (ES6+)",
+        "TypeScript",
+        "React.js",
+        "Next.js",
+        "Responsive Design"
+      ]
+    },
+    {
+      "category": "⚙️ Backend & AI Research",
+      "items": [
+        "Node.js / Express",
+        "Python",
+        "FastAPI",
+        "NLP Algorithms",
+        "Vector Database (Chroma)",
+        "RAG Pipelines"
+      ]
+    },
+    {
+      "category": "🎓 Kỹ Năng Hỗ Trợ",
+      "items": [
+        "Git / GitHub",
+        "Web Scraping (BeautifulSoup/Playwright)",
+        "SQLite / PostgreSQL",
+        "English translation",
+        "Japanese Basic (Tự học N4)"
+      ]
+    }
+  ],
+  "customBlocks": [
+    {
+      "type": "textBlock",
+      "title": "Lời chào từ Trần Nhân",
+      "content": "Chào mừng Sensei đến với không gian cá nhân của tôi. Nơi tôi chia sẻ về lập trình web và các nghiên cứu xử lý ngôn ngữ tự nhiên (NLP) song song với hệ thống tìm kiếm ngữ cảnh thông minh (RAG)."
+    }
+  ],
+  "title": "Software Engineer & Scientific Research Assistant @ NEU",
+  "avatar": "/images/myself.jpg",
   "tools": [
-    { "name": "VS Code", "level": "Thành thạo" },
-    { "name": "Terminal / Git", "level": "Tốt" },
-    { "name": "Chrome DevTools", "level": "Tốt" }
+    {
+      "name": "VS Code",
+      "level": "Thành thạo"
+    },
+    {
+      "name": "Terminal / Git",
+      "level": "Tốt"
+    },
+    {
+      "name": "Chrome DevTools",
+      "level": "Tốt"
+    }
+  ],
+  "certificates": [
+    {
+      "title": "Gemini Developer Certification",
+      "issuer": "Google Cloud",
+      "date": "2026",
+      "image": "/images/myself.jpg"
+    }
   ],
   "highlights": {
     "web": {
@@ -29,63 +110,5 @@
       "title": "Crawl & Xử lý dữ liệu",
       "desc": "Viết script crawler tự động thu thập và chuẩn hóa dữ liệu từ các wiki/fandom quốc tế phục vụ các ứng dụng cá nhân."
     }
-  },
-  "techStack": [
-    {
-      "category": "🌐 Lập Trình Frontend",
-      "items": ["HTML5 / CSS3", "JavaScript (ES6+)", "TypeScript", "React.js", "Next.js", "Responsive Design"]
-    },
-    {
-      "category": "⚙️ Backend & AI Research",
-      "items": ["Node.js / Express", "Python", "FastAPI", "NLP Algorithms", "Vector Database (Chroma)", "RAG Pipelines"]
-    },
-    {
-      "category": "🎓 Kỹ Năng Hỗ Trợ",
-      "items": ["Git / GitHub", "Web Scraping (BeautifulSoup/Playwright)", "SQLite / PostgreSQL", "English translation", "Japanese Basic (Tự học N4)"]
-    }
-  ],
-  "timeline": [
-    {
-      "title": "Trợ lý Nghiên cứu Khoa học & NLP",
-      "period": "Hiện tại",
-      "sub": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
-      "desc": "Phát triển và triển khai hệ thống phân loại bài viết khoa học bằng xử lý ngôn ngữ tự nhiên (NLP). Xây dựng cấu trúc cơ sở dữ liệu Vector để tối ưu khả năng tìm kiếm ngữ cảnh (RAG), hỗ trợ các đề tài nghiên cứu của trường."
-    },
-    {
-      "title": "Crawl & Xây dựng Database Wiki",
-      "period": "2025 - 2026",
-      "sub": "Hệ Cơ sở dữ liệu Anime tự động",
-      "desc": "Viết các công cụ crawler thu thập lượng lớn dữ liệu Anime/Manga từ các fandom wiki lớn. Thiết kế hệ thống làm sạch và chuẩn hóa dữ liệu quan hệ cục bộ phục vụ các minigame cá nhân."
-    }
-  ],
-  "education": [
-    {
-      "school": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
-      "degree": "Cử nhân Công nghệ thông tin",
-      "period": "2023 - 2027",
-      "gpa": "3.8/4.0",
-      "details": "Chuyên ngành Khoa học Máy tính & AI. Thành viên tiêu biểu CLB Nghiên cứu khoa học sinh viên."
-    }
-  ],
-  "certificates": [
-    {
-      "title": "Gemini Developer Certification",
-      "issuer": "Google Cloud",
-      "date": "2026",
-      "image": "/images/myself.jpg"
-    },
-    {
-      "title": "Machine Learning Specialization",
-      "issuer": "Coursera / Stanford",
-      "date": "2025",
-      "image": ""
-    }
-  ],
-  "customBlocks": [
-    {
-      "type": "textBlock",
-      "title": "Lời chào từ Trần Nhân",
-      "content": "Chào mừng Sensei đến với không gian cá nhân của tôi. Nơi tôi chia sẻ về lập trình web và các nghiên cứu xử lý ngôn ngữ tự nhiên (NLP) song song với hệ thống tìm kiếm ngữ cảnh thông minh (RAG)."
-    }
-  ]
+  }
 }
