@@ -487,7 +487,7 @@ export default function Home() {
               <div className={styles.plusDecal + " " + styles.decalBR}>+</div>
 
               {/* Header Hồ sơ với Avatar */}
-              <div className={styles.statCardHeader} style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
+              <div className={styles.statCardHeader} style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
                 {profileData.avatar ? (
                   <img 
                     src={profileData.avatar} 
