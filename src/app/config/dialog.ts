@@ -1,42 +1,18 @@
 import { DialogNode } from "../types";
+import dialogData from "./dialog.json";
 
-export const DIALOG_TREE: Record<string, DialogNode> = {
-  start: {
-    text: "Xin chào Sensei! Hôm nay Arona có thể giúp gì cho Sensei ạ? Em đang truy cập vào cơ sở dữ liệu của Trần Nhân đây!",
-    options: [
-      { label: "Báo cáo nghiên cứu khoa học tại NEU?", nextNode: "research" },
-      { label: "Dự án sinh thái game Aniko là gì?", nextNode: "aniko" },
-      { label: "Hỏi về sở thích Light Novel của Trần Nhân?", nextNode: "hobby" },
-    ],
-  },
-  research: {
-    text: "Báo cáo khoa học: Trần Nhân hiện đang làm Trợ lý Nghiên cứu tại Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU). Cậu ấy chuyên sâu về phân loại văn bản học thuật, Vector Embeddings và hệ thống RAG tìm kiếm thông minh đó Sensei!",
-    options: [
-      { label: "Thật ấn tượng! Còn game Aniko thì sao?", nextNode: "aniko" },
-      { label: "Cậu ấy đang học thêm gì thế?", nextNode: "learning" },
-      { label: "Quay lại menu chính nhé Arona.", nextNode: "start" },
-    ],
-  },
-  aniko: {
-    text: "Aniko là hệ sinh thái Web Game & Database cực đỉnh xoay quanh Anime/Manga! Cậu ấy đã code các mini-game như Anidle, AniTexto (giống variant Contexto) và AniGrid. Cậu ấy tự viết crawl tool lấy data từ các wiki Anime về làm DB riêng nữa!",
-    options: [
-      { label: "Tuyệt quá! Còn nghiên cứu NEU thì sao?", nextNode: "research" },
-      { label: "Arona kể về sở thích dịch LN đi!", nextNode: "hobby" },
-      { label: "Quay lại menu chính nào.", nextNode: "start" },
-    ],
-  },
-  hobby: {
-    text: "Ngoài việc code ra, Trần Nhân là một otaku chính hiệu! Cậu ấy rất chăm chỉ dịch Light Novel từ tiếng Anh sang tiếng Việt lúc rảnh rỗi và đang tự học tiếng Nhật để đọc LN gốc nữa!",
-    options: [
-      { label: "Thú vị đấy! Cậu ấy học công nghệ gì mới?", nextNode: "learning" },
-      { label: "Trở lại menu chính nhé.", nextNode: "start" },
-    ],
-  },
-  learning: {
-    text: "Hiện tại cậu ấy đang tập trung học Advanced AI/ML để tối ưu hóa Vector Search và nghiên cứu các mô hình LLM nhỏ gọn chạy offline, song song với việc nâng cao kỹ năng tiếng Nhật (Japanese) để phục vụ công việc tương lai!",
-    options: [
-      { label: "Tuyệt vời! Cho tôi xem dự án Aniko.", nextNode: "aniko" },
-      { label: "Quay lại từ đầu nha Arona.", nextNode: "start" },
-    ],
-  },
+export const DIALOG_TREE: Record<string, DialogNode> = {};
+
+(dialogData.nodes || []).forEach((node: any) => {
+  DIALOG_TREE[node.id] = {
+    text: node.text,
+    options: node.options
+  };
+});
+
+export const ARONA_CHAT_SETTINGS = dialogData.aronaChat || {
+  header: "A.R.O.N.A OS CONNECTED",
+  title: "Arona",
+  status: "Hỗ Trợ Đắc Lực",
+  sub: "Hệ điều hành Schale OS v1.5"
 };

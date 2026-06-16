@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../page.module.css";
-import { DIALOG_TREE } from "../config/dialog";
+import { DIALOG_TREE, ARONA_CHAT_SETTINGS } from "../config/dialog";
 
 type AronaChatProps = {
   dialogText: string;
@@ -18,7 +18,7 @@ export default function AronaChat({
   return (
     <>
       <div className={styles.holoHeader}>
-        <span>A.R.O.N.A OS CONNECTED</span>
+        <span>{ARONA_CHAT_SETTINGS.header}</span>
         <div className={styles.holoIndicator}>
           <div className={styles.pingLight} />
           <span>ONLINE</span>
@@ -28,9 +28,9 @@ export default function AronaChat({
       <div className={styles.holoBody}>
         <div style={{ width: "100%" }}>
           <h3 className={styles.avatarTitle}>
-            <span>Arona</span> — Hỗ Trợ Đắc Lực
+            <span>{ARONA_CHAT_SETTINGS.title}</span> — {ARONA_CHAT_SETTINGS.status}
           </h3>
-          <span className={styles.avatarSub}>Hệ điều hành Schale OS v1.5</span>
+          <span className={styles.avatarSub}>{ARONA_CHAT_SETTINGS.sub}</span>
         </div>
         
         <p className={styles.dialogText}>

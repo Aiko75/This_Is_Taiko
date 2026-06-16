@@ -22,6 +22,7 @@ collections:
           - { label: "Họ và Tên", name: "name", widget: "string" }
           - { label: "Chức danh giới thiệu", name: "title", widget: "string" }
           - { label: "Tiểu sử ngắn", name: "bio", widget: "text" }
+          - { label: "Giới thiệu bản thân chi tiết (Hỗ trợ Markdown)", name: "aboutLong", widget: "markdown", required: false }
           - { label: "Ảnh đại diện (Avatar)", name: "avatar", widget: "image", required: false }
           - { label: "Số năm kinh nghiệm", name: "experience", widget: "string" }
           - { label: "Chuyên môn chính", name: "specialization", widget: "string" }
@@ -124,6 +125,31 @@ collections:
               - { label: "Nhãn hành động (VD: GHÉ THĂM GITHUB, ĐANG NGHIÊN CỨU)", name: "actionLabel", widget: "string" }
               - { label: "Đường dẫn liên kết (URL)", name: "url", widget: "string", required: false }
               - { label: "Kích hoạt hiển thị", name: "isActive", widget: "boolean" }
+
+      - name: "dialog"
+        label: "Kịch bản hội thoại Arona (Visual Novel)"
+        file: "src/app/config/dialog.json"
+        fields:
+          - label: "Cấu hình khung hội thoại (Arona Chat Settings)"
+            name: "aronaChat"
+            widget: "object"
+            fields:
+              - { label: "Tiêu đề tiêu đề (Header)", name: "header", widget: "string" }
+              - { label: "Tên nhân vật (Name)", name: "title", widget: "string" }
+              - { label: "Mô tả trạng thái (Status)", name: "status", widget: "string" }
+              - { label: "Dòng phụ đề hệ thống (Subtitle)", name: "sub", widget: "string" }
+          - label: "Danh sách các nút kịch bản (Dialogue Nodes)"
+            name: "nodes"
+            widget: "list"
+            fields:
+              - { label: "Mã định danh nút (ID - vd: start, research)", name: "id", widget: "string" }
+              - { label: "Nội dung Arona nói (Text)", name: "text", widget: "text" }
+              - label: "Các lựa chọn phản hồi (Options)"
+                name: "options"
+                widget: "list"
+                fields:
+                  - { label: "Nội dung nhãn lựa chọn (Label)", name: "label", widget: "string" }
+                  - { label: "Chuyển tới ID nút kế tiếp (Next Node ID)", name: "nextNode", widget: "string" }
 
   - name: "blog"
     label: "Bài viết & Nhật ký"

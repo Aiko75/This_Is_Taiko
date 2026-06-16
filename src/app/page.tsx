@@ -15,6 +15,7 @@ import CampaignStage from "./components/CampaignStage";
 import MomoTalk, { type ResponseMode } from "./components/MomoTalk";
 import ProfHUD from "./components/ProfHUD";
 import AronaChat from "./components/AronaChat";
+import ChatMarkdown from "./components/ChatMarkdown";
 
 // Dữ liệu từ CMS JSON
 import projectsData from "./config/projects.json";
@@ -474,12 +475,9 @@ export default function Home() {
               <h3 style={{ fontSize: "1.4rem", color: "var(--accent)", fontWeight: 800 }}>
                 Kỹ sư Phần mềm & Trợ lý Nghiên cứu AI
               </h3>
-              <p className={styles.bioParagraph}>
-                Chào mừng bạn đến với trang portfolio của tôi! Tôi là Trần Nhân, hiện đang làm Trợ lý Nghiên cứu & Phát triển tại **Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)**. Công việc chính của tôi xoay quanh việc phát triển các thuật toán NLP thông minh, Vector Embeddings và tích hợp mô hình RAG để xử lý dữ liệu nghiên cứu học thuật lớn.
-              </p>
-              <p className={styles.bioParagraph}>
-                Bên cạnh nghiên cứu tại trường, tôi là một lập trình viên nhiệt huyết, thích hiện thực hóa các ý tưởng sáng tạo. Tôi xây dựng dự án cá nhân **Aniko** - một hệ sinh thái Web Game với các game giải đố Anime tự code như Anidle, AniTexto và AniGrid. Tôi cũng thường xuyên biên dịch Light Novels Anh - Việt và tự học tiếng Nhật để nâng cao kỹ năng bản thân.
-              </p>
+              <div className={styles.bioParagraph} style={{ marginTop: "16px" }}>
+                <ChatMarkdown text={(profileData as any).aboutLong || ""} />
+              </div>
             </div>
 
             <div className={`${styles.statCard} glass-panel`}>
@@ -740,7 +738,9 @@ export default function Home() {
                       <span className={styles.timelinePeriod}>{event.period}</span>
                     </div>
                     <div className={styles.timelineSub}>{event.sub}</div>
-                    <p className={styles.timelineContent}>{event.desc}</p>
+                    <div className={styles.timelineContent}>
+                      <ChatMarkdown text={event.desc} />
+                    </div>
                   </div>
                 ))}
               </div>
