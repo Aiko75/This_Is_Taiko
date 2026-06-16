@@ -134,7 +134,7 @@ collections:
               - { label: "Mô tả ngắn", name: "desc", widget: "text" }
               - { label: "Tags", name: "tags", widget: "list", field: { name: "tag", widget: "string" } }
               - { label: "Đánh giá độ sao (1-3)", name: "stars", widget: "number", value_type: "int" }
-              - { label: "Vật phẩm rơi (Drops icon & name)"
+              - label: "Vật phẩm rơi (Drops icon & name)"
                 name: "drops"
                 widget: "list"
                 fields:
