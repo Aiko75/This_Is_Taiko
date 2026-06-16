@@ -1,15 +1,17 @@
 {
-  "name": "Trần Nhân",
-  "title": "Software Engineer & Scientific Research Assistant @ NEU",
-  "bio": "Đam mê kết hợp xử lý ngôn ngữ tự nhiên (NLP), Vector Embeddings và hệ thống RAG tìm kiếm ngữ cảnh thông minh. Hiện đang công tác nghiên cứu học thuật tại Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU) song song lập trình ứng dụng Web chuyên nghiệp. Thích kết hợp các sở thích cá nhân (Anime, Game, Light Novels) vào lập trình thế giới số.",
-  "level": 85,
-  "position": "Striker",
-  "role": "Attacker",
-  "affiliation": "NEU // Schale",
-  "terrainRanks": [
-    { "name": "VS Code (Urban)", "rank": "S" },
-    { "name": "Terminal (Outdoor)", "rank": "S" },
-    { "name": "Browser (Indoor)", "rank": "A" }
+  "timeline": [
+    {
+      "title": "Trợ lý Nghiên cứu Khoa học & NLP",
+      "period": "Hiện tại",
+      "sub": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
+      "desc": "Phát triển và triển khai hệ thống phân loại bài viết khoa học bằng xử lý ngôn ngữ tự nhiên (NLP). Xây dựng cấu trúc cơ sở dữ liệu Vector để tối ưu khả năng tìm kiếm ngữ cảnh (RAG), hỗ trợ các đề tài nghiên cứu của trường."
+    },
+    {
+      "title": "Crawl & Xây dựng Database Wiki",
+      "period": "2025 - 2026",
+      "sub": "Hệ Cơ sở dữ liệu Anime tự động",
+      "desc": "Viết các công cụ crawler thu thập lượng lớn dữ liệu Anime/Manga từ các fandom wiki lớn. Thiết kế hệ thống làm sạch và chuẩn hóa dữ liệu quan hệ cục bộ phục vụ các minigame cá nhân."
+    }
   ],
   "skills": {
     "ex": {
@@ -37,32 +39,59 @@
       "upgrade": "Hiệu ứng: Khả năng khai phá tài nguyên và cấu trúc dữ liệu không đồng nhất."
     }
   },
+  "level": 85,
+  "bio": "IT + Otaku :D\nĐang có định hướng du học Nhật Bản",
+  "position": "Striker",
+  "name": "Trần Ngọc Nhân",
+  "affiliation": "NEU ",
   "techStack": [
     {
       "category": "🌐 Lập Trình Frontend",
-      "items": ["HTML5 / CSS3", "JavaScript (ES6+)", "TypeScript", "React.js", "Next.js", "Responsive Design"]
+      "items": [
+        "HTML5 / CSS3",
+        "JavaScript (ES6+)",
+        "TypeScript",
+        "React.js",
+        "Next.js",
+        "Responsive Design"
+      ]
     },
     {
       "category": "⚙️ Backend & AI Research",
-      "items": ["Node.js / Express", "Python", "FastAPI", "NLP Algorithms", "Vector Database (Chroma)", "RAG Pipelines"]
+      "items": [
+        "Node.js / Express",
+        "Python",
+        "FastAPI",
+        "NLP Algorithms",
+        "Vector Database (Chroma)",
+        "RAG Pipelines"
+      ]
     },
     {
       "category": "🎓 Kỹ Năng Hỗ Trợ",
-      "items": ["Git / GitHub", "Web Scraping (BeautifulSoup/Playwright)", "SQLite / PostgreSQL", "English translation", "Japanese Basic (Tự học N4)"]
+      "items": [
+        "Git / GitHub",
+        "Web Scraping (BeautifulSoup/Playwright)",
+        "SQLite / PostgreSQL",
+        "English translation",
+        "Japanese Basic (Tự học N4)"
+      ]
     }
   ],
-  "timeline": [
+  "terrainRanks": [
     {
-      "title": "Trợ lý Nghiên cứu Khoa học & NLP",
-      "period": "Hiện tại",
-      "sub": "Trường Công nghệ - Đại học Kinh tế Quốc dân (NEU)",
-      "desc": "Phát triển và triển khai hệ thống phân loại bài viết khoa học bằng xử lý ngôn ngữ tự nhiên (NLP). Xây dựng cấu trúc cơ sở dữ liệu Vector để tối ưu khả năng tìm kiếm ngữ cảnh (RAG), hỗ trợ các đề tài nghiên cứu của trường."
+      "name": "VS Code (Urban)",
+      "rank": "S"
     },
     {
-      "title": "Crawl & Xây dựng Database Wiki",
-      "period": "2025 - 2026",
-      "sub": "Hệ Cơ sở dữ liệu Anime tự động",
-      "desc": "Viết các công cụ crawler thu thập lượng lớn dữ liệu Anime/Manga từ các fandom wiki lớn. Thiết kế hệ thống làm sạch và chuẩn hóa dữ liệu quan hệ cục bộ phục vụ các minigame cá nhân."
+      "name": "Antigravity (Outdoor)",
+      "rank": "S"
+    },
+    {
+      "name": "Browser (Indoor)",
+      "rank": "A"
     }
-  ]
+  ],
+  "role": "Attacker",
+  "title": "Software Engineer & Scientific Research Assistant @ NEU"
 }
