@@ -10,7 +10,7 @@ public_folder: "/images"
 
 collections:
   - name: "website_data"
-    label: "Dữ liệu Website"
+    label: "Quản trị thông tin"
     delete: false
     editor:
       preview: false

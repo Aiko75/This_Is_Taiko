@@ -764,10 +764,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px 10px;
-  background: rgba(0, 166, 255, 0.02);
-  border: 1px dashed var(--border-color);
-  padding: 10px 8px;
+  gap: 8px 12px;
+  background: rgba(255, 77, 109, 0.02);
+  border: 1px solid rgba(255, 77, 109, 0.15);
+  padding: 12px 10px;
   border-radius: var(--border-radius-sm);
   margin-bottom: 20px;
 }
@@ -776,18 +776,22 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
   white-space: nowrap;
+  background: rgba(255, 77, 109, 0.04);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 77, 109, 0.08);
 }
 
 .baTerrainRank {
   color: #ffffff;
   background-color: var(--accent-secondary);
-  font-weight: 900;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.68rem;
 }
 
 /* Character skill upgrading buttons */

@@ -520,7 +520,7 @@ export default function Home() {
                   <span className={styles.statCardTitle} style={{ fontSize: "1.25rem", color: "var(--foreground)" }}>
                     Thông Tin Chuyên Môn
                   </span>
-                  <span className={styles.statLevel} style={{ fontSize: "0.85rem", color: "var(--accent)", alignSelf: "flex-start", marginTop: "2px" }}>
+                  <span className={styles.statLevel} style={{ fontSize: "0.85rem", color: "#ffffff", alignSelf: "flex-start", marginTop: "2px" }}>
                     {profileData.experience} Kinh nghiệm
                   </span>
                 </div>

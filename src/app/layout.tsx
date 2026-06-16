@@ -10,7 +10,7 @@ const inter = Inter({
 
 const outfit = Outfit({
   variable: "--font-outfit",
-  subsets: ["latin"],
+  subsets: ["latin", "vietnamese" as any],
 });
 
 export const metadata: Metadata = {
