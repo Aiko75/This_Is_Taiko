@@ -39,6 +39,7 @@
       "period": "3/2026 - 12/2026"
     }
   ],
+  "aboutLong": "Chỉ là một anh bạn Dev qua đường mà thôi",
   "experience": "2+ năm",
   "specialization": "Software Dev & AI Research",
   "name": "Trần Ngọc Nhân",
@@ -115,19 +116,10 @@
   "highlights": {
     "web": {
       "title": "Dự án Web Game (Aniko)",
-      "desc": "Thiết kế và phát triển hệ sinh thái mini-game Aniko (React.js, CSS animations). Tích hợp các trò chơi giải đố thú vị như Anidle, AniTexto và AniGrid xoay quanh văn hóa Anime/Manga, đem lại trải nghiệm tương tác trực quan cho người dùng."
-    },
-    "translation": {
-      "title": "Biên dịch Light Novel",
-      "desc": "Biên dịch các tác phẩm Light Novel từ tiếng Anh sang tiếng Việt, rèn luyện tư duy ngôn ngữ nhạy bén và kỹ năng diễn đạt văn phong trôi chảy tự nhiên."
-    },
-    "japanese": {
-      "title": "Tự học Tiếng Nhật",
-      "desc": "Tự học tiếng Nhật hướng tới N4/N3 để đọc trực tiếp tài liệu gốc, nâng cao khả năng tiếp cận tri thức đa ngôn ngữ."
-    },
-    "crawler": {
-      "title": "Crawl & Xử lý dữ liệu",
-      "desc": "Viết script crawler tự động thu thập và chuẩn hóa dữ liệu từ các wiki/fandom quốc tế phục vụ các ứng dụng cá nhân."
+      "desc": "Thiết kế và phát triển hệ sinh thái mini-game Aniko (React.js, CSS animations). Tích hợp các trò chơi giải đố thú vị như Anidle, AniTexto và AniGrid xoay quanh văn hóa Anime/Manga, đem lại trải nghiệm tương tác trực quan cho người dùng.",
+      "id": "Dev",
+      "category": "Lập trình Web",
+      "categoryShort": "Web"
     }
   }
 }
