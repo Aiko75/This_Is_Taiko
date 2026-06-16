@@ -47,7 +47,7 @@ export default function CampaignStage({
       
       <p className={styles.projectDesc}>{desc}</p>
       
-      <span className={styles.stageDropsTitle}>Tài nguyên rơi:</span>
+      <span className={styles.stageDropsTitle}>Công nghệ sử dụng:</span>
       <div className={styles.stageDropsGrid}>
         {drops.map((drop, i) => (
           <div key={i} className={styles.dropSlot}>

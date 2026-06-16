@@ -25,11 +25,7 @@ Kinh nghiệm: ${profileData.experience}
 Chuyên môn chính: ${profileData.specialization}
 Định hướng / Mục tiêu: ${profileData.target}
 Công cụ & Môi trường làm việc: ${JSON.stringify(profileData.tools)}
-Kỹ năng & Dự án trọng tâm:
-- Dự án phát triển Web: ${profileData.highlights.web.title} - ${profileData.highlights.web.desc}
-- Biên dịch ngôn ngữ: ${profileData.highlights.translation.title} - ${profileData.highlights.translation.desc}
-- Tự học & Ngoại ngữ: ${profileData.highlights.japanese.title} - ${profileData.highlights.japanese.desc}
-- Thu thập & Xử lý dữ liệu: ${profileData.highlights.crawler.title} - ${profileData.highlights.crawler.desc}
+Kỹ năng & Dự án trọng tâm: ${JSON.stringify(profileData.highlights)}
 Học vấn (Education): ${JSON.stringify((profileData as any).education || [])}
 Chứng chỉ & Giải thưởng (Certificates): ${JSON.stringify((profileData as any).certificates || [])}
 Khối nội dung tùy chỉnh thêm trên trang (Custom Blocks): ${JSON.stringify((profileData as any).customBlocks || [])}

@@ -28,7 +28,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Trạng thái hiển thị popup chi tiết kỹ năng
-  const [activeSkill, setActiveSkill] = useState<"web" | "translation" | "japanese" | "crawler" | null>(null);
+  const [activeSkill, setActiveSkill] = useState<any | null>(null);
 
   // Trạng thái hiển thị bài viết nhật ký
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
@@ -559,22 +559,14 @@ export default function Home() {
               </div>
 
               <div className={styles.baSkillsGrid}>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("web")}>
-                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>WEB</div>
-                  <span className={styles.baSkillName}>{profileData.highlights.web.title}</span>
-                </button>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("translation")}>
-                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>LN</div>
-                  <span className={styles.baSkillName}>{profileData.highlights.translation.title}</span>
-                </button>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("japanese")}>
-                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>JPN</div>
-                  <span className={styles.baSkillName}>{profileData.highlights.japanese.title}</span>
-                </button>
-                <button className={styles.baSkillBtn} onClick={() => setActiveSkill("crawler")}>
-                  <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>DB</div>
-                  <span className={styles.baSkillName}>{profileData.highlights.crawler.title}</span>
-                </button>
+                {((profileData as any).highlights || []).map((highlight: any, idx: number) => (
+                  <button key={idx} className={styles.baSkillBtn} onClick={() => setActiveSkill(highlight)}>
+                    <div className={styles.baSkillIcon} style={{ background: "rgba(255, 77, 109, 0.2)", color: "var(--accent)" }}>
+                      {highlight.categoryShort || "SKILL"}
+                    </div>
+                    <span className={styles.baSkillName}>{highlight.title}</span>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -583,7 +575,7 @@ export default function Home() {
         {/* POPUP CHI TIẾT KỸ NĂNG */}
         {activeSkill && (
           <SkillPopup
-            skillDetails={profileData.highlights[activeSkill]}
+            skillDetails={activeSkill}
             onClose={() => setActiveSkill(null)}
           />
         )}

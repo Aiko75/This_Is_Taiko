@@ -35,32 +35,13 @@ collections:
               - { label: "Mức độ sử dụng (Ví dụ: Thành thạo / Tốt)", name: "level", widget: "string" }
           - label: "Kỹ năng & Dự án trọng tâm"
             name: "highlights"
-            widget: "object"
+            widget: "list"
             fields:
-              - label: "Dự án phát triển Web"
-                name: "web"
-                widget: "object"
-                fields:
-                  - { label: "Tiêu đề", name: "title", widget: "string" }
-                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
-              - label: "Biên dịch ngôn ngữ"
-                name: "translation"
-                widget: "object"
-                fields:
-                  - { label: "Tiêu đề", name: "title", widget: "string" }
-                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
-              - label: "Tự học & Ngoại ngữ"
-                name: "japanese"
-                widget: "object"
-                fields:
-                  - { label: "Tiêu đề", name: "title", widget: "string" }
-                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
-              - label: "Thu thập & Xử lý dữ liệu"
-                name: "crawler"
-                widget: "object"
-                fields:
-                  - { label: "Tiêu đề", name: "title", widget: "string" }
-                  - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
+              - { label: "Mã định danh (không dấu, vd: web, translation)", name: "id", widget: "string" }
+              - { label: "Tên nhóm kỹ năng (VD: Lập trình Web)", name: "category", widget: "string" }
+              - { label: "Ký hiệu viết tắt (VD: WEB, LN, JPN)", name: "categoryShort", widget: "string" }
+              - { label: "Tiêu đề dự án/kỹ năng", name: "title", widget: "string" }
+              - { label: "Mô tả chi tiết", name: "desc", widget: "text" }
           - label: "Bản đồ Công nghệ (Tech Stack)"
             name: "techStack"
             widget: "list"
@@ -128,21 +109,21 @@ collections:
             widget: "list"
             fields:
               - { label: "ID dự án (không dấu, vd: aniko)", name: "id", widget: "string" }
-              - { label: "Mã khu vực (Khu vực // Phân loại)", name: "area", widget: "string" }
+              - { label: "Phân loại hiển thị (VD: FRONTEND // GAME DEV)", name: "area", widget: "string" }
               - { label: "Tên dự án", name: "title", widget: "string" }
-              - { label: "Phân loại (game/research/tool)", name: "category", widget: "select", options: ["game", "research", "tool"] }
+              - { label: "Phân loại chính (game/research/tool)", name: "category", widget: "select", options: ["game", "research", "tool"] }
               - { label: "Mô tả ngắn", name: "desc", widget: "text" }
               - { label: "Tags", name: "tags", widget: "list", field: { name: "tag", widget: "string" } }
-              - { label: "Đánh giá độ sao (1-3)", name: "stars", widget: "number", value_type: "int" }
-              - label: "Vật phẩm rơi (Drops icon & name)"
+              - { label: "Độ phức tạp / Đánh giá (1-3 sao)", name: "stars", widget: "number", value_type: "int" }
+              - label: "Công nghệ sử dụng (Emoji & Tên)"
                 name: "drops"
                 widget: "list"
                 fields:
                   - { label: "Icon Emoji", name: "icon", widget: "string" }
                   - { label: "Tên công nghệ", name: "name", widget: "string" }
-              - { label: "Nhãn hành động (VD: START TASK)", name: "actionLabel", widget: "string" }
+              - { label: "Nhãn hành động (VD: GHÉ THĂM GITHUB, ĐANG NGHIÊN CỨU)", name: "actionLabel", widget: "string" }
               - { label: "Đường dẫn liên kết (URL)", name: "url", widget: "string", required: false }
-              - { label: "Kích hoạt", name: "isActive", widget: "boolean" }
+              - { label: "Kích hoạt hiển thị", name: "isActive", widget: "boolean" }
 
   - name: "blog"
     label: "Bài viết & Nhật ký"

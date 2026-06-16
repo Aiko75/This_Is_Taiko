@@ -113,13 +113,13 @@
       "date": "10/2026"
     }
   ],
-  "highlights": {
-    "web": {
-      "title": "Dự án Web Game (Aniko)",
-      "desc": "Thiết kế và phát triển hệ sinh thái mini-game Aniko (React.js, CSS animations). Tích hợp các trò chơi giải đố thú vị như Anidle, AniTexto và AniGrid xoay quanh văn hóa Anime/Manga, đem lại trải nghiệm tương tác trực quan cho người dùng.",
+  "highlights": [
+    {
       "id": "Dev",
       "category": "Lập trình Web",
-      "categoryShort": "Web"
+      "categoryShort": "Web",
+      "title": "Dự án Web Game (Aniko)",
+      "desc": "Thiết kế và phát triển hệ sinh thái mini-game Aniko (React.js, CSS animations). Tích hợp các trò chơi giải đố thú vị như Anidle, AniTexto và AniGrid xoay quanh văn hóa Anime/Manga, đem lại trải nghiệm tương tác trực quan cho người dùng."
     }
-  }
+  ]
 }
